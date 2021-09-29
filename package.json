@@ -1,0 +1,61 @@
+{
+  "name": "project-structure-api",
+  "version": "0.0.1",
+  "description": "Project structure for API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "start-watch": "nodemon --delay 1000ms dist/index.js",
+    "build": "npm test && tsc",
+    "build-only": "tsc",
+    "build-watch": "tsc -w",
+    "lint": "eslint . --ext .ts",
+    "prettier-format": "prettier --config .prettierrc --write .",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.spec.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arifintahu/project-structure-api.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Miftahul Arifin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arifintahu/project-structure-api/issues"
+  },
+  "homepage": "https://github.com/arifintahu/project-structure-api#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.5"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.13",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.10.1",
+    "@types/sequelize": "^4.28.10",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^9.1.2",
+    "nodemon": "^2.0.13",
+    "nyc": "^15.1.0",
+    "prettier": "^2.4.1",
+    "sinon": "^11.1.2",
+    "supertest": "^6.1.6",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  }
+}
