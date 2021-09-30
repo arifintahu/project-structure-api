@@ -17,9 +17,9 @@ const level = () => {
 const colors = {
   error: 'red',
   warn: 'yellow',
-  info: 'green',
+  info: 'cyan',
   http: 'magenta',
-  debug: 'white'
+  debug: 'green'
 };
 
 winston.addColors(colors);

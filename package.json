@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "node -r dotenv/config . dotenv_config_path=./.env",
-    "start-watch": "nodemon --delay 1000ms dist/index.js",
+    "start-watch": "nodemon --delay 1000ms && npm run start",
     "build": "npm test && tsc",
     "build-only": "tsc",
     "build-watch": "tsc -w",
