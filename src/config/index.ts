@@ -1,4 +1,4 @@
 import expressConfig from './express';
-import databaseConfig from './database';
+import syncDB from './database';
 
-export { expressConfig, databaseConfig };
+export { expressConfig, syncDB };

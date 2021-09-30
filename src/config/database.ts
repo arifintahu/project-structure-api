@@ -1,16 +1,21 @@
 import { Sequelize } from 'sequelize';
+import Logger from '../api/lib/logger';
+
+function customLog(msg: string) {
+  Logger.debug(msg);
+}
 
 export const db: Sequelize = new Sequelize({
-  host: process.env['DB_HOST'] || 'localhost',
-  database: process.env['DB_NAME'] || 'lms',
-  username: process.env['DB_USER'] || 'postgres',
-  password: process.env['DB_PASS'] || 'postgres',
-  port: parseInt(process.env['DB_PORT'], 10) || 5432,
+  host: <string>process.env.DB_HOST,
+  database: <string>process.env.DB_NAME,
+  username: <string>process.env.DB_USER,
+  password: <string>process.env.DB_PASS,
+  port: parseInt(process.env.DB_PORT, 10) || 5432,
   dialect: 'postgres',
-  logging: console.log,
+  logging: <string>process.env.NODE_ENV === 'development' ? customLog : false,
   timezone: 'Asia/Jakarta'
 });
 
-export default function loadSequelize(): Promise<Sequelize> {
-  return db.sync();
+export default async function syncDB(): Promise<Sequelize> {
+  return await db.sync();
 }

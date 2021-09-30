@@ -3,8 +3,8 @@ import { userController } from '../../controllers';
 
 const route: Router = Router();
 
-route.get('/user', (req: Request, res: Response) => {
-  userController.findUser(req, res);
+route.get('/', (req: Request, res: Response) => {
+  userController.findAll(req, res);
 });
 
 export default route;

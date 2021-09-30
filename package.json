@@ -2,10 +2,10 @@
   "name": "project-structure-api",
   "version": "0.0.1",
   "description": "Project structure for API",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "prepare": "husky install",
-    "start": "node dist/index.js",
+    "start": "node -r dotenv/config . dotenv_config_path=./.env",
     "start-watch": "nodemon --delay 1000ms dist/index.js",
     "build": "npm test && tsc",
     "build-only": "tsc",
