@@ -1,5 +1,6 @@
 import * as express from 'express';
 import constants from './constants';
+import Logger from './api/lib/logger';
 import { expressConfig } from './config';
 import { createServer } from 'http';
 import { Server } from 'net';
@@ -14,7 +15,7 @@ export async function startServer(): Promise<Server> {
   const httpServer = createServer(app);
 
   return httpServer.listen(PORT, () => {
-    console.log('Server is listening on port ', PORT);
+    Logger.debug(`Server is listening on port ${PORT}`);
   });
 }
 

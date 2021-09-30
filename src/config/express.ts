@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as compression from 'compression';
 import * as cors from 'cors';
 import routes from '../api/routes/v1';
+import { morganMiddleware } from '../api/middlewares';
 import { Application } from 'express';
 
 export default function expressConfig(app: Application): Promise<Application> {
@@ -12,6 +13,7 @@ export default function expressConfig(app: Application): Promise<Application> {
       app.use(express.json());
       app.use('*', cors());
       app.use(compression());
+      app.use(morganMiddleware);
       app.use(`/${API}`, routes);
       resolve(app);
     } catch (e) {

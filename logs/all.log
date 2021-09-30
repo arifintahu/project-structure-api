@@ -1,0 +1,6 @@
+2021-09-30 08:10:07:107 [32minfo[39m: [32mServer is listening on port 3001[39m
+2021-09-30 08:18:58:1858 [37mdebug[39m: [37mServer is listening on port 3001[39m
+2021-09-30 08:19:19:1919 [35mhttp[39m: [35mGET /api/v1/user/user 200 21 - 4.962 ms[39m
+[35m[39m
+2021-09-30 08:19:19:1919 [35mhttp[39m: [35mGET /favicon.ico 404 150 - 3.306 ms[39m
+[35m[39m
