@@ -1,19 +1,26 @@
 import { db } from '../../config/database';
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import User from './user';
 
-export default class User extends Model {}
-User.init(
+export default class Login extends Model {}
+Login.init(
   {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    first_name: {
-      type: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    last_name: {
-      type: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false
     },
     is_active: {
       type: DataTypes.BOOLEAN,
@@ -32,10 +39,14 @@ User.init(
     }
   },
   {
-    modelName: 'user',
+    modelName: 'login',
     freezeTableName: true,
     createdAt: false,
     updatedAt: false,
     sequelize: db
   }
 );
+
+Login.belongsTo(User, {
+  foreignKey: 'user_id'
+});

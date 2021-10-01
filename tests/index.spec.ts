@@ -6,6 +6,6 @@ const app = createServer();
 
 describe('Server checks', () => {
   it('Server is created without error', (done) => {
-    request(app).get(`/${API}/user`).expect(200, done);
+    request(app).get(`/${API}`).expect(200, done);
   });
 });
