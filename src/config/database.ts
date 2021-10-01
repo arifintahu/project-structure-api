@@ -10,9 +10,9 @@ export const db: Sequelize = new Sequelize({
   database: <string>process.env.DB_NAME,
   username: <string>process.env.DB_USER,
   password: <string>process.env.DB_PASS,
-  port: parseInt(process.env.DB_PORT, 10) || 5432,
+  port: parseInt(<string>process.env.DB_PORT, 10) || 5432,
   dialect: 'postgres',
-  logging: <string>process.env.NODE_ENV === 'development' ? customLog : false,
+  logging: <string>process.env.DB_LOG === 'true' ? customLog : false,
   timezone: 'Asia/Jakarta'
 });
 

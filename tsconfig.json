@@ -6,6 +6,8 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": false,
+    "strict": true,
+    "baseUrl": "./src",
     "typeRoots": ["node_modules/@types", "src/@types"]
   },
   "include": ["src/**/*"],
