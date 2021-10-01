@@ -73,6 +73,6 @@
   },
   "lint-staged": {
     "*.+(ts)": "eslint --fix",
-    "*.+(tss|json|md)": "prettier --config .prettierrc --write ."
+    "*.+(ts|json|md)": "prettier --config .prettierrc --write ."
   }
 }
