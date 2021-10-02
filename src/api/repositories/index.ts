@@ -1,3 +1,4 @@
-import * as userRepository from './user.respository';
+import * as userRepository from './user.repository';
+import * as loginRepository from './login.repository';
 
-export { userRepository };
+export { userRepository, loginRepository };
