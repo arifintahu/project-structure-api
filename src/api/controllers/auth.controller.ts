@@ -4,14 +4,17 @@ import { Request, Response } from 'express';
 import Logger from '../lib/logger';
 
 export async function getMeta(req: Request, res: Response): Promise<void> {
-  const result = await authService.login(req.body);
+  const result = await authService.getMeta().catch((err) => {
+    Logger.error(err);
+    res.status(400);
+  });
   if (result) {
-    res.send(result);
-  } else {
-    res.status(400).json({
-      ok: false,
-      msg: 'null'
+    res.status(200).send({
+      success: true,
+      payload: result
     });
+  } else {
+    res.status(400).send({ message: 'Not found' });
   }
 }
 
@@ -22,9 +25,12 @@ export async function login(req: Request, res: Response): Promise<void> {
       Logger.error(err);
       res.status(400);
     });
-    res.status(200).send(result);
+    res.status(200).send({
+      success: true,
+      payload: result
+    });
   } else {
-    res.status(403).json({ message: 'Validation failed' });
+    res.status(403).send({ message: 'Validation failed' });
   }
 }
 
@@ -38,8 +44,11 @@ export async function registerAccount(
       Logger.error(err);
       res.status(400);
     });
-    res.status(200).send(result);
+    res.status(200).send({
+      success: true,
+      payload: result
+    });
   } else {
-    res.status(403).json({ message: 'Validation failed' });
+    res.status(403).send({ message: 'Validation failed' });
   }
 }

@@ -12,4 +12,9 @@ export interface FormRegister {
   last_name: string;
 }
 
+export interface Token {
+  token: string;
+  expires: string;
+}
+
 export const emailRegex = /\S+@\S+\.\S+/;

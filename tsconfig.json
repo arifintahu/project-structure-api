@@ -8,7 +8,7 @@
     "esModuleInterop": false,
     "strict": true,
     "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "src/@types"]
+    "typeRoots": ["node_modules/@types", "./src/@types/express/index.d.ts"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { authController } from '../../controllers';
-import authenticate from '../../middlewares/authenticate';
+import { authorization } from '../../middlewares';
 
 const route: Router = Router();
 
-route.get('/', [authenticate], (req: Request, res: Response) => {
+route.get('/', [authorization], (req: Request, res: Response) => {
   authController.getMeta(req, res);
 });
 

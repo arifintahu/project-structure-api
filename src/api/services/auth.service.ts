@@ -1,6 +1,6 @@
 import { User, Login } from '../models';
 import { userRepository, loginRepository } from '../repositories';
-import { FormLogin, FormRegister } from '../interfaces';
+import { FormLogin, FormRegister, Token } from '../interfaces';
 import { signToken } from '../helpers/token';
 import * as bcrypt from 'bcrypt';
 
@@ -11,7 +11,7 @@ export function getMeta(): Promise<User[]> {
   });
 }
 
-export function login(params: FormLogin): Promise<string | undefined> {
+export function login(params: FormLogin): Promise<Token> {
   return new Promise(async (resolve, reject) => {
     try {
       const login: Login | null = await loginRepository.findOne(params.email);
@@ -27,11 +27,15 @@ export function login(params: FormLogin): Promise<string | undefined> {
       if (!isValid) {
         reject('Invalid password');
       }
-      const token = await signToken(params.email);
+      const expires = '1d';
+      const token = await signToken(params.email, expires);
       if (!token) {
         reject('Invalid token');
       }
-      resolve(token);
+      resolve({
+        token: `Bearer ${token}`,
+        expires: expires
+      });
     } catch (err) {
       reject(err);
     }

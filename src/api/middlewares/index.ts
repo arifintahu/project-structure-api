@@ -1,3 +1,4 @@
 import morganMiddleware from './morgan';
+import authorization from './authorization';
 
-export { morganMiddleware };
+export { morganMiddleware, authorization };
