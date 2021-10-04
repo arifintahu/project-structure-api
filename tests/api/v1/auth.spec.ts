@@ -8,18 +8,24 @@ describe('Auth API checks', () => {
   // it('Check auth information', (done) => {
   //   request(app).get(`/${API}/auth`).expect(200, done);
   // });
-  it('Check register account', (done) => {
+  // it('Check register account', (done) => {
+  //   request(app)
+  //     .post(`/${API}/auth/register`)
+  //     .send({
+  //       email: 'test@gmail.com',
+  //       password: '12345',
+  //       first_name: 'Miftahul',
+  //       last_name: 'Arifin'
+  //     })
+  //     .expect(200, done);
+  // });
+  it('Check login account', (done) => {
     request(app)
-      .post(`/${API}/auth/register`)
+      .post(`/${API}/auth/login`)
       .send({
-        email: 'miftahul97@gmail.com',
-        password: '12345',
-        first_name: 'Miftahul',
-        last_name: 'Arifin'
+        email: 'test@gmail.com',
+        password: '12345'
       })
       .expect(200, done);
   });
-  // it('Check login account', (done) => {
-  //   request(app).get(`/${API}/auth`).expect(200, done);
-  // });
 });

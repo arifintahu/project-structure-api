@@ -29,3 +29,14 @@ export async function create(data: FormLogin): Promise<boolean> {
     resolve(true);
   });
 }
+
+export async function findOne(email: string): Promise<Login | null> {
+  return new Promise(async (resolve) => {
+    const login = await Login.findOne({
+      where: {
+        email: email
+      }
+    });
+    resolve(login);
+  });
+}
