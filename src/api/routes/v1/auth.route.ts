@@ -12,8 +12,4 @@ route.post('/login', [], (req: Request, res: Response) => {
   authController.login(req, res);
 });
 
-route.post('/register', [], (req: Request, res: Response) => {
-  authController.registerAccount(req, res);
-});
-
 export default route;

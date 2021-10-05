@@ -22,6 +22,11 @@ Login.init(
       type: DataTypes.UUID,
       allowNull: true
     },
+    is_verify: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    },
     is_active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,

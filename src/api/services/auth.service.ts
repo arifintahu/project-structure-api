@@ -1,13 +1,13 @@
-import { User, Login } from '../models';
-import { userRepository, loginRepository } from '../repositories';
-import { FormLogin, FormRegister, Token } from '../interfaces';
+import { Login } from '../models';
+import { loginRepository } from '../repositories';
+import { FormLogin, Token } from '../interfaces';
 import { signToken } from '../helpers/token';
 import * as bcrypt from 'bcrypt';
 
-export function getMeta(): Promise<User[]> {
+export function getMeta(params: { userdata: string }): Promise<Login | null> {
   return new Promise(async (resolve) => {
-    const users: User[] = await userRepository.findAll();
-    resolve(users);
+    const login: Login | null = await loginRepository.findOne(params.userdata);
+    resolve(login);
   });
 }
 
@@ -36,25 +36,6 @@ export function login(params: FormLogin): Promise<Token> {
         token: `Bearer ${token}`,
         expires: expires
       });
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-export function registerAccount(params: FormRegister): Promise<boolean> {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const isEmailExist = await loginRepository.isEmailExist(params.email);
-      if (isEmailExist) {
-        reject('Email exists');
-      }
-      const hashedPassword = await bcrypt.hashSync(params.password, 5);
-      const userLogin = await loginRepository.create({
-        email: params.email,
-        password: hashedPassword
-      });
-      resolve(userLogin);
     } catch (err) {
       reject(err);
     }

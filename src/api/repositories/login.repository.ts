@@ -1,5 +1,5 @@
 import { Login } from '../models';
-import { FormLogin } from '../interfaces';
+import { RegisterLogin } from '../interfaces';
 
 export async function isEmailExist(email: string): Promise<boolean> {
   return new Promise(async (resolve, reject) => {
@@ -18,7 +18,7 @@ export async function isEmailExist(email: string): Promise<boolean> {
   });
 }
 
-export async function create(data: FormLogin): Promise<boolean> {
+export async function create(data: RegisterLogin): Promise<boolean> {
   return new Promise(async (resolve, reject) => {
     const login = await Login.create(data).catch((err) => {
       reject(err);
@@ -38,5 +38,24 @@ export async function findOne(email: string): Promise<Login | null> {
       }
     });
     resolve(login);
+  });
+}
+
+export async function remove(id: string): Promise<boolean> {
+  return new Promise(async (resolve) => {
+    const [result, _] = await Login.update(
+      {
+        is_active: false
+      },
+      {
+        where: {
+          id: id
+        }
+      }
+    );
+    if (!result) {
+      resolve(false);
+    }
+    resolve(true);
   });
 }
