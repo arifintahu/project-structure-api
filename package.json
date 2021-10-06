@@ -5,9 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "prepare": "husky install",
-    "prestart": "npm run build-only",
     "start": "node -r dotenv/config .",
-    "start-watch": "nodemon --delay 1000ms && npm run start",
+    "start-watch": "nodemon --delay 5000ms --exec npm run start",
     "build": "npm run test && tsc",
     "build-only": "tsc",
     "build-watch": "tsc -w",

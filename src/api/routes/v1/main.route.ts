@@ -1,11 +1,14 @@
 /**
- * @openapi
- * /:
- *   get:
- *     description: Welcome to swagger-jsdoc!
- *     responses:
- *       200:
- *         description: Returns a mysterious string.
+ *  @openapi
+ *  /:
+ *    get:
+ *      summary: Main route
+ *      description: Test main route
+ *      tags:
+ *      - main
+ *      responses:
+ *        200:
+ *          description: Returns without error.
  */
 import { Router, Request, Response } from 'express';
 

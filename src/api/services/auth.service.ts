@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 export function getMeta(params: { userdata: string }): Promise<Login | null> {
   return new Promise(async (resolve) => {
-    const login: Login | null = await loginRepository.findOne(params.userdata);
+    const login: Login | null = await loginRepository.getMeta(params.userdata);
     resolve(login);
   });
 }
@@ -18,7 +18,6 @@ export function login(params: FormLogin): Promise<Token> {
       if (!login) {
         reject('Email is not exists');
       }
-
       const isValid = await bcrypt.compareSync(
         params.password,
         login?.getDataValue('password')

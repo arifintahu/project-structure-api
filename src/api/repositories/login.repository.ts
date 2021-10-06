@@ -34,7 +34,21 @@ export async function findOne(email: string): Promise<Login | null> {
   return new Promise(async (resolve) => {
     const login = await Login.findOne({
       where: {
-        email: email
+        email: email,
+        is_active: true
+      }
+    });
+    resolve(login);
+  });
+}
+
+export async function getMeta(email: string): Promise<Login | null> {
+  return new Promise(async (resolve) => {
+    const login = await Login.findOne({
+      attributes: ['id', 'email', 'user_id', 'is_verify'],
+      where: {
+        email: email,
+        is_active: true
       }
     });
     resolve(login);

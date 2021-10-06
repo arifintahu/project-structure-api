@@ -7,21 +7,21 @@ export default async function authorization(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  if (
-    !req.headers.authorization ||
-    !req.headers.authorization.includes('Bearer')
-  ) {
+  const authorization = String(req.headers['x-authorization']);
+  if (!authorization || !authorization.includes('Bearer')) {
     res.status(401).send({
       status: false,
       msg: 'unauthorized'
     });
+    return;
   }
-  const token = String(req.headers.authorization?.slice(7));
+  const token = authorization?.slice(7);
   const payload = await verifyToken(token).catch(() => {
     res.status(401).send({
       status: false,
       msg: 'unauthorized'
     });
+    return;
   });
 
   if (!payload) {
@@ -29,6 +29,7 @@ export default async function authorization(
       status: false,
       msg: 'unauthorized'
     });
+    return;
   }
 
   loginRepository.findOne(payload.sub).then((userdata) => {
@@ -37,6 +38,7 @@ export default async function authorization(
         status: false,
         msg: 'unauthorized'
       });
+      return;
     }
     req.params.userdata = userdata?.getDataValue('email');
 
