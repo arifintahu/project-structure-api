@@ -1,4 +1,5 @@
 <div id="top"></div>
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -38,11 +39,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -151,4 +148,3 @@ Don't forget to give the project a star! Thanks again!
 [stars-url]: https://github.com/arifintahu/project-structure-api/stargazers
 [issues-shield]: https://img.shields.io/github/issues/arifintahu/project-structure-api.svg?style=for-the-badge
 [issues-url]: https://github.com/arifintahu/project-structure-api/issues
-[license-shield]: https://img.shields.io/github/license/arifintahu/project-structure-api.svg?style=for-the-badge
