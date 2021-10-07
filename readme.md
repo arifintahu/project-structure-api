@@ -10,9 +10,7 @@
   <h3 align="center">Project Structure API</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/arifintahu/project-structure-api"><strong>Explore the docs »</strong></a>
+    Complete project template for building RESTful API with Typescript
     <br />
     <br />
     <a href="https://github.com/arifintahu/project-structure-api/issues">Report Bug</a>
@@ -47,32 +45,30 @@
 
 ## About The Project
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Building project with standarized structure could save much our time. Then, we could focus on business process without considering too much on project structure. On the other hand, a good project structure should be clean, nice refractored, and easy to maintain.
 
 Here's why:
 
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should implement DRY principles to the rest of your life :smile:
+- Your time should be focused on creating something amazing. A project that solves a problem and helps others.
+- You shouldn't be doing the same tasks over and over like structuring project
+- You should implement dry principles to the rest of your life
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this project template!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This project structure is built using
 
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Svelte](https://svelte.dev/)
-- [Laravel](https://laravel.com)
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
+- [Express.js](https://expressjs.com/)
+- [Sequelize](https://sequelize.org/)
+- [Swagger](https://swagger.io/)
+- [Typescript](https://www.typescriptlang.org/)
+- [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
+- [Postgresql](https://www.postgresql.org/)
+- [Mocha](https://mochajs.org/)
+- [Supertest](https://www.npmjs.com/package/supertest)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -80,43 +76,51 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To start project, just clone this repo or [Use this template](https://github.com/arifintahu/project-structure-api/generate)
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Before installation, make sure you have the following prerequisites
 
-- npm
+- NPM
   ```sh
   npm install npm@latest -g
   ```
+- Postgresql server
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo or simply select [use this template](https://github.com/arifintahu/project-structure-api/generate)
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/arifintahu/project-structure-api.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Create .env file in main directory
+   ```sh
+   touch .env
    ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+4. Write the following example environment
+   ```sh
+   NODE_ENV=development
+   PORT=3001
+   DB_HOST=localhost
+   DB_NAME=test
+   DB_USER=postgres
+   DB_PASS=postgres
+   DB_PORT=5432
+   DB_LOG=true
+   ```
+5. Test and build the project
+   ```sh
+   npm run build
+   ```
+6. Run the server
+   ```sh
+   npm run start
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -130,9 +134,9 @@ If you have a suggestion that would make this better, please fork the repo and c
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/feature-name`)
+3. Commit your Changes (`git commit -m 'Add some feature-name'`)
+4. Push to the Branch (`git push origin feature/feature-name`)
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
