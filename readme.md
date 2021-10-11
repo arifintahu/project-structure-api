@@ -45,7 +45,7 @@
 
 ## About The Project
 
-Building project with standarized structure could save much our time. Then, we could focus on business process without considering too much on project structure. On the other hand, a good project structure should be clean, nice refractored, and easy to maintain.
+Building project with standardized structure could save much our time. We could focus on business process without considering too much on project structure. On the other hand, a good project structure should be clean, nice refactored, and easy to maintain.
 
 Here's why:
 
@@ -71,6 +71,49 @@ This project structure is built using
 - [Supertest](https://www.npmjs.com/package/supertest)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+### Features
+
+- Everything is modular and unit testable
+- Typescript everything
+- Express API with dependency injected routes, controllers, repositories, middleware, and services
+- Centralized configuration loading and validation
+
+### Folder Structure
+
+```
+├── .husky/                     # Pre-commit config for lint staged
+├── src/                        # All application source
+├──── @types/                   # Type definition
+|
+├──── api/
+├────── controllers/            # Define all controllers
+├────── helpers/                # Define all helpers
+├────── lib/
+├──────── logger.ts             # Define logger
+├────── middlewares/
+├──────── authorization.ts      # Define authorization using JWT
+├──────── morgan.ts             # Define morgan
+├────── models/                 # Define all schema models
+├────── repositories/           # Define all repositories
+├────── routes/
+├──────── v1/                   # Define all v1 routes
+├────── services/               # Define all services
+├────── validations/            # Define all controller validations
+|
+├──── config/
+├────── swagger/                # Define swagger configuration
+├────── database.ts             # Define postgres database connection
+├────── express.ts              # Define express configuration
+|
+├──── constants/                # Define all constants
+├──── server.ts                 # Create express config
+├──── index.ts                  # ENTRYPOINT - Start server
+|
+├── test/                       # End-to-end test
+|
+└── Lots of random build-related files
+```
 
 <!-- GETTING STARTED -->
 
