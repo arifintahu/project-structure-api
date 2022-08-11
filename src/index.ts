@@ -6,12 +6,12 @@ import { PORT } from './constants';
 import { createServer } from './server';
 
 export function startServer(): Server {
-  const app: Application = createServer();
+    const app: Application = createServer();
 
-  return app.listen(PORT, async () => {
-    await syncDB();
-    Logger.debug(`Server is listening on port ${PORT}`);
-  });
+    return app.listen(PORT, async () => {
+        await syncDB();
+        Logger.debug(`Server is listening on port ${PORT}`);
+    });
 }
 
 startServer();

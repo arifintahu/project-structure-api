@@ -9,18 +9,18 @@ import { API } from '../constants';
 import { specs } from './swagger';
 
 export default function expressConfig(app: Application): Application {
-  const corsOption = {
-    origin: '*',
-    credentials: true
-  };
+    const corsOption = {
+        origin: '*',
+        credentials: true
+    };
 
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
-  app.use(cors(corsOption));
-  app.use(compression());
-  app.use(morganMiddleware);
-  app.use(`/${API}`, routes);
-  app.use(`/${API}/docs`, swaggerUi.serve, swaggerUi.setup(specs));
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(cors(corsOption));
+    app.use(compression());
+    app.use(morganMiddleware);
+    app.use(`/${API}`, routes);
+    app.use(`/${API}/docs`, swaggerUi.serve, swaggerUi.setup(specs));
 
-  return app;
+    return app;
 }
