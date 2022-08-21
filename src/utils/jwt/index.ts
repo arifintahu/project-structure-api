@@ -1,17 +1,17 @@
-import { JWT_SECRET } from '../../constants';
+import AppConfig from '../../config/appConfig';
 import * as jwt from 'jsonwebtoken';
 
 export function signToken(
-    id: string,
-    expires: string
+    userId: number,
+    expires = '1d'
 ): Promise<string | undefined> {
     return new Promise((resolve, reject) => {
         jwt.sign(
             {
-                sub: id,
+                id: userId,
                 iat: Date.now()
             },
-            JWT_SECRET,
+            AppConfig.app.secret,
             {
                 expiresIn: expires
             },
@@ -25,9 +25,11 @@ export function signToken(
     });
 }
 
-export function verifyToken(token: string): Promise<any> {
+export function verifyToken(
+    token: string
+): Promise<jwt.JwtPayload | undefined> {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        jwt.verify(token, AppConfig.app.secret, (err, decoded) => {
             if (err) {
                 reject(err);
             }

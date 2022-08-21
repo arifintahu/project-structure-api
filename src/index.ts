@@ -1,13 +1,14 @@
-import Logger from './api/lib/logger';
 import { Server } from 'net';
-import { Application } from 'express';
-import { PORT } from './constants';
 import { createServer } from './server';
+import Logger from './utils/logger';
+import AppConfig from './config/appConfig';
+
+const PORT = AppConfig.app.port;
 
 export function startServer(): Server {
-    const app: Application = createServer();
+    const app = createServer();
 
-    return app.listen(PORT, async () => {
+    return app.listen(PORT, () => {
         Logger.debug(`Server is listening on port ${PORT}`);
     });
 }

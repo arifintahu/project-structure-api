@@ -1,41 +1,70 @@
-import { db } from '../../config/database';
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
+import { db } from '../../database/config';
+import Role from './Role';
 
-export default class User extends Model {}
+interface UserAttributes {
+    id: number;
+    roleId?: number;
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    password: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date;
+}
+
+export type UserInput = Optional<UserAttributes, 'id' | 'roleId'>;
+export type UserOutput = Required<UserAttributes>;
+
+class User extends Model<UserAttributes, UserInput> implements UserAttributes {
+    public id!: number;
+    public roleId!: number;
+    public firstName!: string;
+    public lastName!: string;
+    public email!: string;
+    public password!: string;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+    public readonly deletedAt!: Date;
+}
+
 User.init(
     {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
         },
-        first_name: {
+        roleId: {
+            type: DataTypes.INTEGER
+        },
+        firstName: {
             type: DataTypes.STRING
         },
-        last_name: {
+        lastName: {
             type: DataTypes.STRING
         },
-        is_active: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: true,
-            allowNull: false
-        },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: Sequelize.fn('now'),
-            allowNull: false
-        },
-        created_by: {
+        email: {
             type: DataTypes.STRING,
-            defaultValue: 'system',
+            unique: true,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
             allowNull: false
         }
     },
     {
-        modelName: 'user',
-        freezeTableName: true,
-        createdAt: false,
-        updatedAt: false,
+        timestamps: true,
+        paranoid: true,
         sequelize: db
     }
 );
+
+User.belongsTo(Role, {
+    foreignKey: 'roleId'
+});
+
+export default User;

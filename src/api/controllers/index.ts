@@ -1,4 +1,7 @@
-import * as userController from './user.controller';
-import * as authController from './auth.controller';
+import UserController from './UserController';
+import AuthController from './AUthController';
+
+const userController = new UserController();
+const authController = new AuthController();
 
 export { userController, authController };
