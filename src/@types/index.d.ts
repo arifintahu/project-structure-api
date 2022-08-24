@@ -1,11 +1,9 @@
-import * as express from 'express';
+import 'express';
 
 declare global {
     namespace Express {
         interface Request {
-            userdata: {
-                email: string;
-            };
+            userdata: Record<string, unknown>;
         }
     }
 }

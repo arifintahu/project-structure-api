@@ -1,13 +1,13 @@
-import JWT from '../../lib/jwt';
+import JWT from '../../../utils/jwt';
 import { NextFunction, Request, Response } from 'express';
-import { loginRepository } from '../../repositories';
+import UserRepository from '../../repositories/UserRepository';
 
 class Authorization {
-    jwt: typeof JWT;
-    loginRepository: typeof loginRepository;
+    jwt: JWT;
+    userRepository: UserRepository;
     constructor() {
-        this.jwt = JWT;
-        this.loginRepository = loginRepository;
+        this.jwt = new JWT();
+        this.userRepository = new UserRepository();
     }
 
     async authorize(
@@ -15,7 +15,7 @@ class Authorization {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        const authorization = String(req.headers['x-authorization']);
+        const authorization = String(req.headers.authorization);
         if (!authorization || !authorization.includes('Bearer')) {
             res.status(401).send({
                 status: false,
@@ -24,13 +24,7 @@ class Authorization {
             return;
         }
         const token = authorization?.slice(7);
-        const payload = await this.jwt.verifyToken(token).catch(() => {
-            res.status(401).send({
-                status: false,
-                msg: 'unauthorized'
-            });
-            return;
-        });
+        const payload = await this.jwt.verifyToken(token);
 
         if (!payload) {
             res.status(401).send({
@@ -40,8 +34,8 @@ class Authorization {
             return;
         }
 
-        const userdata = await this.loginRepository.findOne(
-            <string>payload.sub
+        const userdata = await this.userRepository.getUserDetail(
+            <number>payload.id
         );
 
         if (!userdata) {
@@ -51,7 +45,7 @@ class Authorization {
             });
             return;
         }
-        req.params.userdata = userdata?.getDataValue('email');
+        req.userdata = userdata;
 
         next();
     }

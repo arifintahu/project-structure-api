@@ -16,7 +16,7 @@ class AuthController {
         try {
             const payload: LoginType = req.body;
             const token = await this.authService.login(payload);
-            res.status(200).json({
+            res.status(200).send({
                 message: 'Logged in successfully',
                 data: token
             });

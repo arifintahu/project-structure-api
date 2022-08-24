@@ -16,7 +16,7 @@ class UserController {
         try {
             const payload: CreateUserType = req.body;
             const user = await this.userService.createUser(payload);
-            res.status(200).json({
+            res.status(200).send({
                 message: 'User created successfully',
                 data: user
             });
@@ -32,7 +32,7 @@ class UserController {
     ): Promise<void> {
         try {
             const user = await this.userService.getUsers();
-            res.status(200).json({
+            res.status(200).send({
                 message: 'Users fetched successfully',
                 data: user
             });

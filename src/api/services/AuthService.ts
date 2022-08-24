@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
 import { UserInput } from '../models/User';
-import { signToken } from '../../utils/jwt';
+import JWT from '../../utils/jwt';
 
 interface IAuthService {
     login(payload: UserInput): Promise<string>;
@@ -9,10 +9,10 @@ interface IAuthService {
 
 class AuthService implements IAuthService {
     userRepository: UserRepository;
-    signToken: typeof signToken;
+    jwt: JWT;
     constructor() {
         this.userRepository = new UserRepository();
-        this.signToken = signToken;
+        this.jwt = new JWT();
     }
 
     async login(payload: UserInput): Promise<string> {
@@ -28,7 +28,7 @@ class AuthService implements IAuthService {
             throw new Error('Email and Password is not match');
         }
 
-        const token = await this.signToken(user.id);
+        const token = await this.jwt.signToken(user.id);
 
         if (!token) {
             throw new Error('Invalid token');

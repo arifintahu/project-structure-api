@@ -1,5 +1,5 @@
 import * as swaggerJsdoc from 'swagger-jsdoc';
-import { API } from '../../../constants';
+import AppConfig from '../../config/appConfig';
 
 const options = {
     definition: {
@@ -21,8 +21,8 @@ const options = {
         },
         servers: [
             {
-                url: `/${API}`,
-                description: 'Development server'
+                url: `/${AppConfig.app.api}`,
+                description: `Server ${AppConfig.app.server}`
             }
         ]
     },
