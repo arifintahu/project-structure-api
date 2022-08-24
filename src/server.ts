@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as compression from 'compression';
 import * as cors from 'cors';
 import * as swaggerUi from 'swagger-ui-express';
-import routes from './api/routes/v1';
+import routesV1 from './api/routes/v1';
 import MorganMiddleware from './api/middlewares/morgan';
 import { Application } from 'express';
 import AppConfig from './config/appConfig';
@@ -20,9 +20,9 @@ export function createServer(): Application {
     app.use(cors(corsOption));
     app.use(compression());
     app.use(MorganMiddleware);
-    app.use(`/${AppConfig.app.api}`, routes);
+    app.use(`/api/${AppConfig.app.apiVersion}`, routesV1);
     app.use(
-        `/${AppConfig.app.api}/docs`,
+        `/docs/${AppConfig.app.apiVersion}`,
         swaggerUi.serve,
         swaggerUi.setup(specs)
     );

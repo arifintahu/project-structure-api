@@ -2,7 +2,7 @@ import JWT from '../../../utils/jwt';
 import { NextFunction, Request, Response } from 'express';
 import UserRepository from '../../repositories/UserRepository';
 
-class Authorization {
+class Auth {
     jwt: JWT;
     userRepository: UserRepository;
     constructor() {
@@ -10,27 +10,21 @@ class Authorization {
         this.userRepository = new UserRepository();
     }
 
-    async authorize(
+    async authenticate(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
         const authorization = String(req.headers.authorization);
         if (!authorization || !authorization.includes('Bearer')) {
-            res.status(401).send({
-                status: false,
-                msg: 'unauthorized'
-            });
+            res.status(401);
             return;
         }
         const token = authorization?.slice(7);
         const payload = await this.jwt.verifyToken(token);
 
         if (!payload) {
-            res.status(401).send({
-                status: false,
-                msg: 'unauthorized'
-            });
+            res.status(401);
             return;
         }
 
@@ -39,10 +33,7 @@ class Authorization {
         );
 
         if (!userdata) {
-            res.status(401).send({
-                status: false,
-                msg: 'unauthorized'
-            });
+            res.status(401);
             return;
         }
         req.userdata = userdata;
@@ -51,4 +42,4 @@ class Authorization {
     }
 }
 
-export default new Authorization();
+export default new Auth();

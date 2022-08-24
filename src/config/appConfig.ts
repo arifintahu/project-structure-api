@@ -8,7 +8,7 @@ const AppConfig = {
         server: process.env.SERVER || 'development',
         isDevelopment: process.env.SERVER === 'development' ? true : false,
         port: parseInt(<string>process.env.PORT, 10) || 3000,
-        api: process.env.API || 'api/v1',
+        apiVersion: process.env.API_VERSION || 'v1',
         secret: process.env.SECRET || 'j!89nKO5as&Js'
     },
     db: {

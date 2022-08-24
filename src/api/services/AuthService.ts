@@ -1,10 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
-import { UserInput } from '../models/User';
+import { UserInput, UserOutput } from '../models/User';
 import JWT from '../../utils/jwt';
 
 interface IAuthService {
     login(payload: UserInput): Promise<string>;
+    signUp(payload: UserInput): Promise<UserOutput>;
 }
 
 class AuthService implements IAuthService {
@@ -35,6 +36,21 @@ class AuthService implements IAuthService {
         }
 
         return token;
+    }
+
+    async signUp(payload: UserInput): Promise<UserOutput> {
+        const user = await this.userRepository.getUserByEmail(payload.email);
+
+        if (user) {
+            throw new Error('Email must be unique');
+        }
+
+        const hashedPassword = bcrypt.hashSync(payload.password, 5);
+
+        return this.userRepository.createUser({
+            ...payload,
+            password: hashedPassword
+        });
     }
 }
 

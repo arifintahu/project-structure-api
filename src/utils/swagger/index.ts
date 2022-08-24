@@ -1,6 +1,8 @@
 import * as swaggerJsdoc from 'swagger-jsdoc';
 import AppConfig from '../../config/appConfig';
 
+const apiVersion = AppConfig.app.apiVersion;
+
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -21,12 +23,12 @@ const options = {
         },
         servers: [
             {
-                url: `/${AppConfig.app.api}`,
+                url: `/api/${apiVersion}`,
                 description: `Server ${AppConfig.app.server}`
             }
         ]
     },
-    apis: ['./dist/api/routes/v1/*.route.js']
+    apis: [`./dist/api/docs/${apiVersion}/*.js`]
 };
 
 export const specs = swaggerJsdoc(options);

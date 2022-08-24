@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import AuthService from '../services/AuthService';
-import { LoginType } from '../types/auth';
+import { LoginType, SignUpType } from '../types/auth';
 
 class AuthController {
     authService: AuthService;
@@ -19,6 +19,22 @@ class AuthController {
             res.status(200).send({
                 message: 'Logged in successfully',
                 data: token
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async signUp(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            const payload: SignUpType = req.body;
+            await this.authService.signUp(payload);
+            res.status(200).send({
+                message: 'Signed up successfully'
             });
         } catch (error) {
             next(error);
