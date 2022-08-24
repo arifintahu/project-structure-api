@@ -1,7 +1,3 @@
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 const AppConfig = {
     app: {
         name: process.env.APP_NAME,
