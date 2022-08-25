@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { userController } from '../../controllers';
+import UserController from '../../controllers/UserController';
 import Auth from '../../middlewares/auth';
 
 const usersRouter: Router = Router();
 
 usersRouter
     .route('/')
-    .post(Auth.authenticate, userController.createUser)
-    .get(Auth.authenticate, userController.getUsers);
+    .post(Auth.authenticate, UserController.createUser)
+    .get(Auth.authenticate, UserController.getUsers);
 
 export default usersRouter;

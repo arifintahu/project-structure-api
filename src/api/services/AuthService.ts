@@ -9,15 +9,8 @@ interface IAuthService {
 }
 
 class AuthService implements IAuthService {
-    userRepository: UserRepository;
-    jwt: JWT;
-    constructor() {
-        this.userRepository = new UserRepository();
-        this.jwt = new JWT();
-    }
-
     async login(payload: UserInput): Promise<string> {
-        const user = await this.userRepository.getUserByEmail(payload.email);
+        const user = await UserRepository.getUserByEmail(payload.email);
 
         if (!user) {
             throw new Error('User not found');
@@ -29,7 +22,7 @@ class AuthService implements IAuthService {
             throw new Error('Email and Password is not match');
         }
 
-        const token = await this.jwt.signToken(user.id);
+        const token = await JWT.signToken(user.id);
 
         if (!token) {
             throw new Error('Invalid token');
@@ -39,7 +32,7 @@ class AuthService implements IAuthService {
     }
 
     async signUp(payload: UserInput): Promise<UserOutput> {
-        const user = await this.userRepository.getUserByEmail(payload.email);
+        const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
             throw new Error('Email must be unique');
@@ -47,11 +40,11 @@ class AuthService implements IAuthService {
 
         const hashedPassword = bcrypt.hashSync(payload.password, 5);
 
-        return this.userRepository.createUser({
+        return UserRepository.createUser({
             ...payload,
             password: hashedPassword
         });
     }
 }
 
-export default AuthService;
+export default new AuthService();

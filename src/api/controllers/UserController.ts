@@ -3,11 +3,6 @@ import UserService from '../services/UserService';
 import { CreateUserType } from '../types/user';
 
 class UserController {
-    userService: UserService;
-    constructor() {
-        this.userService = new UserService();
-    }
-
     async createUser(
         req: Request,
         res: Response,
@@ -15,7 +10,7 @@ class UserController {
     ): Promise<void> {
         try {
             const payload: CreateUserType = req.body;
-            const user = await this.userService.createUser(payload);
+            const user = await UserService.createUser(payload);
             res.status(200).send({
                 message: 'User created successfully',
                 data: user
@@ -31,7 +26,7 @@ class UserController {
         next: NextFunction
     ): Promise<void> {
         try {
-            const user = await this.userService.getUsers();
+            const user = await UserService.getUsers();
             res.status(200).send({
                 message: 'Users fetched successfully',
                 data: user
@@ -42,4 +37,4 @@ class UserController {
     }
 }
 
-export default UserController;
+export default new UserController();

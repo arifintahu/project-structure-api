@@ -4,8 +4,8 @@ import { UserInput, UserOutput } from '../models/User';
 interface IUserRepository {
     createUser(payload: UserInput): Promise<UserOutput>;
     getUsers(): Promise<UserOutput[]>;
-    getUserDetail(userId: number): Promise<UserOutput>;
-    getUserByEmail(email: string): Promise<UserOutput>;
+    getUserDetail(userId: number): Promise<UserOutput | null>;
+    getUserByEmail(email: string): Promise<UserOutput | null>;
     updateUser(userId: number, data: UserInput): Promise<UserOutput>;
     deleteUser(userId: number): Promise<boolean>;
 }
@@ -21,28 +21,16 @@ class UserRepository implements IUserRepository {
         });
     }
 
-    async getUserDetail(userId: number): Promise<UserOutput> {
-        const user = await User.findByPk(userId);
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        return user;
+    getUserDetail(userId: number): Promise<UserOutput | null> {
+        return User.findByPk(userId);
     }
 
-    async getUserByEmail(email: string): Promise<UserOutput> {
-        const user = await User.findOne({
+    getUserByEmail(email: string): Promise<UserOutput | null> {
+        return User.findOne({
             where: {
                 email: email
             }
         });
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        return user;
     }
 
     async updateUser(userId: number, payload: UserInput): Promise<UserOutput> {
@@ -65,4 +53,4 @@ class UserRepository implements IUserRepository {
     }
 }
 
-export default UserRepository;
+export default new UserRepository();

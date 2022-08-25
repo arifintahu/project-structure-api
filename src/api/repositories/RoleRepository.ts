@@ -16,4 +16,4 @@ class RoleRepository implements IRoleRepository {
     }
 }
 
-export default RoleRepository;
+export default new RoleRepository();

@@ -35,4 +35,4 @@ class JWT {
     }
 }
 
-export default JWT;
+export default new JWT();

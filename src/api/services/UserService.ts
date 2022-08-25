@@ -8,13 +8,8 @@ interface IUserService {
 }
 
 class UserService implements IUserService {
-    userRepository: UserRepository;
-    constructor() {
-        this.userRepository = new UserRepository();
-    }
-
     async createUser(payload: UserInput): Promise<UserOutput> {
-        const user = await this.userRepository.getUserByEmail(payload.email);
+        const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
             throw new Error('Email must be unique');
@@ -22,15 +17,15 @@ class UserService implements IUserService {
 
         const hashedPassword = bcrypt.hashSync(payload.password, 5);
 
-        return this.userRepository.createUser({
+        return UserRepository.createUser({
             ...payload,
             password: hashedPassword
         });
     }
 
     getUsers(): Promise<UserOutput[]> {
-        return this.userRepository.getUsers();
+        return UserRepository.getUsers();
     }
 }
 
-export default UserService;
+export default new UserService();

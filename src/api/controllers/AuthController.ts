@@ -3,11 +3,6 @@ import AuthService from '../services/AuthService';
 import { LoginType, SignUpType } from '../types/auth';
 
 class AuthController {
-    authService: AuthService;
-    constructor() {
-        this.authService = new AuthService();
-    }
-
     async login(
         req: Request,
         res: Response,
@@ -15,7 +10,7 @@ class AuthController {
     ): Promise<void> {
         try {
             const payload: LoginType = req.body;
-            const token = await this.authService.login(payload);
+            const token = await AuthService.login(payload);
             res.status(200).send({
                 message: 'Logged in successfully',
                 data: token
@@ -32,7 +27,7 @@ class AuthController {
     ): Promise<void> {
         try {
             const payload: SignUpType = req.body;
-            await this.authService.signUp(payload);
+            await AuthService.signUp(payload);
             res.status(200).send({
                 message: 'Signed up successfully'
             });
@@ -42,4 +37,4 @@ class AuthController {
     }
 }
 
-export default AuthController;
+export default new AuthController();
