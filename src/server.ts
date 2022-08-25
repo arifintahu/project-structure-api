@@ -7,6 +7,7 @@ import MorganMiddleware from './api/middlewares/morgan';
 import { Application } from 'express';
 import AppConfig from './config/appConfig';
 import { specs } from './utils/swagger';
+import errorHandler from './api/middlewares/handlers/error';
 
 export function createServer(): Application {
     const app = express();
@@ -15,7 +16,7 @@ export function createServer(): Application {
         credentials: true
     };
 
-    app.use(express.urlencoded({ extended: true }));
+    app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
     app.use(cors(corsOption));
     app.use(compression());
@@ -26,6 +27,7 @@ export function createServer(): Application {
         swaggerUi.serve,
         swaggerUi.setup(specs)
     );
+    app.use(errorHandler);
 
     return app;
 }
