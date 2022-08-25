@@ -1,12 +1,11 @@
-import AppConfig from '../config/appConfig';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { User, Role } from '../api/models';
 
-const isDevelopment = AppConfig.app.isDevelopment;
+const syncTables = () => Promise.all([User.sync(), Role.sync()]);
 
-const syncTables = () =>
-    Promise.all([
-        User.sync({ alter: isDevelopment }),
-        Role.sync({ alter: isDevelopment })
-    ]);
-
-export default syncTables;
+syncTables()
+    .then((result) => console.log(result))
+    .catch((error) => console.log(error))
+    .finally(() => process.exit());

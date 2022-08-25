@@ -10,7 +10,8 @@
         "build": "tsc",
         "build-watch": "tsc -w",
         "lint": "eslint . --ext .ts",
-        "prettier": "prettier --config .prettierrc --write ."
+        "prettier": "prettier --config .prettierrc --write .",
+        "sync-db": "node dist/database/sync"
     },
     "repository": {
         "type": "git",

@@ -1,7 +1,7 @@
 const AppConfig = {
     app: {
         name: process.env.APP_NAME,
-        server: process.env.SERVER || 'development',
+        server: process.env.SERVER,
         isDevelopment: process.env.SERVER === 'development' ? true : false,
         port: parseInt(<string>process.env.PORT, 10) || 3000,
         apiVersion: process.env.API_VERSION || 'v1',
