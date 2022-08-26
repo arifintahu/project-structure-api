@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { db } from '../../database/config';
-import Role from './Role';
+import Role, { RoleOutput } from './Role';
 
 interface UserAttributes {
     id: number;
@@ -12,14 +12,15 @@ interface UserAttributes {
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;
+    role?: RoleOutput | null;
 }
 
-export type UserInput = Optional<UserAttributes, 'id'>;
+export type UserInput = Optional<UserAttributes, 'id' | 'role'>;
 export type UserInputUpdate = Optional<
     UserAttributes,
     'id' | 'email' | 'password'
 >;
-export type UserOutput = Required<UserAttributes>;
+export type UserOutput = Optional<UserAttributes, 'role'>;
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     public id!: number;

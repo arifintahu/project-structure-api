@@ -32,6 +32,25 @@ class Auth {
 
         next();
     }
+
+    checkRoles(...roles: string[]) {
+        return async (req: Request, res: Response, next: NextFunction) => {
+            const userdata = req.userdata;
+
+            const roleUser = userdata.role?.slug;
+            if (!roleUser) {
+                res.sendStatus(403);
+                return;
+            }
+
+            const isRoleValid = roles.includes(roleUser);
+            if (!isRoleValid) {
+                res.sendStatus(403);
+                return;
+            }
+            next();
+        };
+    }
 }
 
 export default new Auth();
