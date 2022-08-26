@@ -4,6 +4,7 @@ import { RoleInput, RoleOutput } from '../models/Role';
 interface IRoleRepository {
     createRole(payload: RoleInput): Promise<RoleOutput>;
     getRoles(): Promise<RoleOutput[]>;
+    getRoleBySlug(slug: string): Promise<RoleOutput | null>;
 }
 
 class RoleRepository implements IRoleRepository {
@@ -13,6 +14,14 @@ class RoleRepository implements IRoleRepository {
 
     getRoles(): Promise<RoleOutput[]> {
         return Role.findAll();
+    }
+
+    getRoleBySlug(slug: string): Promise<RoleOutput | null> {
+        return Role.findOne({
+            where: {
+                slug: slug
+            }
+        });
     }
 }
 

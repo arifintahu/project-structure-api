@@ -3,7 +3,7 @@ import { db } from '../../database/config';
 
 interface RoleAttributes {
     id: number;
-    name: number;
+    name: string;
     slug: string;
     description?: string;
     createdAt?: Date;
@@ -16,7 +16,7 @@ export type RoleOutput = Required<RoleAttributes>;
 
 class Role extends Model<RoleAttributes, RoleInput> implements RoleAttributes {
     public id!: number;
-    public name!: number;
+    public name!: string;
     public slug!: string;
     public description!: string;
 
