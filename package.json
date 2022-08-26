@@ -1,6 +1,6 @@
 {
     "name": "project-structure-api",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "description": "Project structure for API",
     "main": "dist/index.js",
     "scripts": {

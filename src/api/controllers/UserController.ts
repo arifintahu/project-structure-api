@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/UserService';
-import { CreateUserType } from '../types/user';
+import { CreateUserType, UpdateUserType } from '../types/user';
 
 class UserController {
     async createUser(
@@ -30,6 +30,56 @@ class UserController {
             res.status(200).send({
                 message: 'Users fetched successfully',
                 data: user
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getUserDetail(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            const userId = Number(req.params.id);
+            const user = await UserService.getUserDetail(userId);
+            res.status(200).send({
+                message: 'User details fetched successfully',
+                data: user
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateUser(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            const userId = Number(req.params.id);
+            const payload: UpdateUserType = req.body;
+            await UserService.updateUser(userId, payload);
+            res.status(200).send({
+                message: 'User updated successfully'
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async deleteUser(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
+        try {
+            const userId = Number(req.params.id);
+            await UserService.deleteUser(userId);
+            res.status(200).send({
+                message: 'User deleted successfully'
             });
         } catch (error) {
             next(error);

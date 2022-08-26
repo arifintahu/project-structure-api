@@ -14,4 +14,22 @@ usersRouter
     )
     .get(Auth.authenticate, UserController.getUsers);
 
+usersRouter
+    .route('/:id')
+    .get(
+        Auth.authenticate,
+        Validate(Requirements.getUserDetail),
+        UserController.getUserDetail
+    )
+    .put(
+        Auth.authenticate,
+        Validate(Requirements.updateUser),
+        UserController.updateUser
+    )
+    .delete(
+        Auth.authenticate,
+        Validate(Requirements.deleteUser),
+        UserController.deleteUser
+    );
+
 export default usersRouter;

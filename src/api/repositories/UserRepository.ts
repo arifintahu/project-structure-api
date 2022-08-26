@@ -1,12 +1,12 @@
-import { User } from '../models';
-import { UserInput, UserOutput } from '../models/User';
+import { User, Role } from '../models';
+import { UserInput, UserInputUpdate, UserOutput } from '../models/User';
 
 interface IUserRepository {
     createUser(payload: UserInput): Promise<UserOutput>;
     getUsers(): Promise<UserOutput[]>;
     getUserDetail(userId: number): Promise<UserOutput | null>;
     getUserByEmail(email: string): Promise<UserOutput | null>;
-    updateUser(userId: number, data: UserInput): Promise<UserOutput>;
+    updateUser(userId: number, payload: UserInputUpdate): Promise<boolean>;
     deleteUser(userId: number): Promise<boolean>;
 }
 
@@ -22,7 +22,16 @@ class UserRepository implements IUserRepository {
     }
 
     getUserDetail(userId: number): Promise<UserOutput | null> {
-        return User.findByPk(userId);
+        return User.findByPk(userId, {
+            attributes: ['id', 'firstName', 'lastName', 'email'],
+            include: [
+                {
+                    model: Role,
+                    as: 'role',
+                    required: false
+                }
+            ]
+        });
     }
 
     getUserByEmail(email: string): Promise<UserOutput | null> {
@@ -33,14 +42,16 @@ class UserRepository implements IUserRepository {
         });
     }
 
-    async updateUser(userId: number, payload: UserInput): Promise<UserOutput> {
-        const user = await User.findByPk(userId);
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        return user.update(payload);
+    async updateUser(
+        userId: number,
+        payload: UserInputUpdate
+    ): Promise<boolean> {
+        const [updatedUserCount] = await User.update(payload, {
+            where: {
+                id: userId
+            }
+        });
+        return !!updatedUserCount;
     }
 
     async deleteUser(userId: number): Promise<boolean> {

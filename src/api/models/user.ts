@@ -14,7 +14,11 @@ interface UserAttributes {
     deletedAt?: Date;
 }
 
-export type UserInput = Optional<UserAttributes, 'id' | 'roleId'>;
+export type UserInput = Optional<UserAttributes, 'id'>;
+export type UserInputUpdate = Optional<
+    UserAttributes,
+    'id' | 'email' | 'password'
+>;
 export type UserOutput = Required<UserAttributes>;
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
@@ -66,7 +70,8 @@ User.init(
 );
 
 User.belongsTo(Role, {
-    foreignKey: 'roleId'
+    foreignKey: 'roleId',
+    as: 'role'
 });
 
 export default User;
