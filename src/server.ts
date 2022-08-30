@@ -22,11 +22,15 @@ export function createServer(): Application {
     app.use(compression());
     app.use(MorganMiddleware);
     app.use(`/api/${AppConfig.app.apiVersion}`, routesV1);
-    app.use(
-        `/docs/${AppConfig.app.apiVersion}`,
-        swaggerUi.serve,
-        swaggerUi.setup(specs)
-    );
+
+    if (AppConfig.app.isDevelopment) {
+        app.use(
+            `/docs/${AppConfig.app.apiVersion}`,
+            swaggerUi.serve,
+            swaggerUi.setup(specs)
+        );
+    }
+
     app.use(errorHandler);
 
     return app;

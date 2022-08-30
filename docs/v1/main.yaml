@@ -1,0 +1,75 @@
+/login:
+    post:
+        summary: Login
+        description: Login
+        tags:
+            - main
+        requestBody:
+            content:
+                'application/json':
+                    schema:
+                        properties:
+                            email:
+                                type: string
+                                format: email
+                            password:
+                                type: string
+                        required:
+                            - email
+                            - password
+                        example:
+                            email: 'admin@mail.com'
+                            password: 'admin'
+            required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+/signup:
+    post:
+        summary: Signup
+        description: Signup
+        tags:
+            - main
+        requestBody:
+            content:
+                'application/json':
+                    schema:
+                        properties:
+                            email:
+                                type: string
+                                format: email
+                            password:
+                                type: string
+                            firstName:
+                                type: string
+                            lastName:
+                                type: string
+                        required:
+                            - email
+                            - password
+                            - firstName
+                        example:
+                            email: 'user@mail.com'
+                            password: 'user'
+                            firstName: 'John'
+                            lastName: 'Doe'
+            required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
