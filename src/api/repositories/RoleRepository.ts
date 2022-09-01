@@ -1,5 +1,4 @@
-import { Role } from '../models';
-import { RoleInput, RoleOutput } from '../models/Role';
+import Role, { RoleInput, RoleOutput } from '../models/Role';
 
 interface IRoleRepository {
     createRole(payload: RoleInput): Promise<RoleOutput>;

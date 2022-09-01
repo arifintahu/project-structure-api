@@ -1,5 +1,5 @@
-import { User, Role } from '../models';
-import { UserInput, UserInputUpdate, UserOutput } from '../models/User';
+import User, { UserInput, UserInputUpdate, UserOutput } from '../models/User';
+import Role from '../models/Role';
 
 interface IUserRepository {
     createUser(payload: UserInput): Promise<UserOutput>;

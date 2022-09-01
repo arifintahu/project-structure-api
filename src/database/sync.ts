@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { User, Role } from '../api/models';
+import Role from '../api/models/Role';
+import User from '../api/models/User';
 
 const syncTables = () => Promise.all([User.sync(), Role.sync()]);
 
