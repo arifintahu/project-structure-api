@@ -9,6 +9,10 @@ const MockedUser = jest.mocked(User, true);
 
 describe('UserRepository', () => {
     describe('UserRepository.__createUser', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return user created', async () => {
             //arrange
             const mockInput =
@@ -29,6 +33,10 @@ describe('UserRepository', () => {
     });
 
     describe('UserRepository.__getUsers', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return list users', async () => {
             //arrange
             const mockModelOptions =
@@ -49,6 +57,10 @@ describe('UserRepository', () => {
     });
 
     describe('UserRepository.__getUserDetail', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return user detail', async () => {
             //arrange
             const mockInput =
@@ -80,6 +92,10 @@ describe('UserRepository', () => {
     });
 
     describe('UserRepository.__getUserByEmail', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return user detail', async () => {
             //arrange
             const mockInput =
@@ -102,6 +118,10 @@ describe('UserRepository', () => {
     });
 
     describe('UserRepository.__updateUser', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return update success', async () => {
             //arrange
             const mockInput =
@@ -132,6 +152,10 @@ describe('UserRepository', () => {
     });
 
     describe('UserRepository.__deleteUser', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return delete success', async () => {
             //arrange
             const mockInput =

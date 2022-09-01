@@ -8,6 +8,10 @@ const MockedRole = jest.mocked(Role, true);
 
 describe('RoleRepository', () => {
     describe('RoleRepository.__createRole', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return role created', async () => {
             //arrange
             const mockInput =
@@ -28,6 +32,10 @@ describe('RoleRepository', () => {
     });
 
     describe('RoleRepository.__getRoles', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return list roles', async () => {
             //arrange
             const mockOutput: any =
@@ -46,6 +54,10 @@ describe('RoleRepository', () => {
     });
 
     describe('RoleRepository.__getRoleBySlug', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should return role detail', async () => {
             //arrange
             const mockInput =
