@@ -11,15 +11,19 @@
         "build-watch": "tsc -w",
         "lint": "eslint . --ext .ts",
         "prettier": "prettier --config .prettierrc --write .",
-        "sync-db": "node dist/database/sync",
-        "test": "jest --coverage ./src"
+        "test": "jest",
+        "test:noCoverage": "jest --collectCoverage=false",
+        "sync-db": "node dist/database/sync"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/arifintahu/project-structure-api.git"
     },
     "keywords": [
-        "nodejs"
+        "nodejs",
+        "typescript",
+        "boilerplate",
+        "project"
     ],
     "author": {
         "name": "Miftahul Arifin",
