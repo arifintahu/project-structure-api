@@ -1,4 +1,68 @@
 const mockResource = {
+    AuthService: {
+        login: {
+            POSITIVE_CASE_INPUT: {
+                email: 'user@mail.com',
+                password: 'password'
+            },
+            CASE_NULL_USER_EMAIL: null,
+            CASE_EXIST_USER_EMAIL: {
+                id: 1,
+                email: 'user@mail.com',
+                password:
+                    '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
+                firstName: 'John',
+                lastName: 'Doe',
+                roleId: 1,
+                createdAt: '2022-08-26 14:40:19',
+                updatedAt: '2022-08-26 14:40:19',
+                deletedAt: null
+            },
+            CASE_VALID_COMPARE: true,
+            CASE_INVALID_COMPARE: false,
+            CASE_VALID_TOKEN: 'abc',
+            CASE_UNDEFINED_TOKEN: undefined,
+            ERR_USER_NOT_FOUND: 'User not found',
+            ERR_INVALID_PASSWORD: 'Email and Password is not match',
+            ERR_INVALID_TOKEN: 'Invalid token'
+        },
+        signUp: {
+            POSITIVE_CASE_INPUT: {
+                email: 'user@mail.com',
+                password: 'password',
+                firstName: 'John',
+                lastName: 'Doe'
+            },
+            CASE_NULL_USER_EMAIL: null,
+            CASE_EXIST_USER_EMAIL: {
+                id: 1,
+                email: 'user@mail.com',
+                password:
+                    '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
+                firstName: 'John',
+                lastName: 'Doe',
+                roleId: 1,
+                createdAt: '2022-08-26 14:40:19',
+                updatedAt: '2022-08-26 14:40:19',
+                deletedAt: null
+            },
+            BCRYPT_HASH_OUTPUT:
+                '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
+            POSITIVE_CASE_OUTPUT: {
+                id: 1,
+                email: 'user@mail.com',
+                password:
+                    '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
+                firstName: 'John',
+                lastName: 'Doe',
+                roleId: 1,
+                createdAt: '2022-08-26 14:40:19',
+                updatedAt: '2022-08-26 14:40:19',
+                deletedAt: null
+            },
+            ERROR_MESSAGE: 'Email must be unique'
+        }
+    },
     RoleService: {
         createRole: {
             POSITIVE_CASE_INPUT: {
