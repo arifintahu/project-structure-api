@@ -1,0 +1,52 @@
+/roles:
+    post:
+        summary: Create role
+        description: Create role
+        tags:
+            - roles
+        security:
+            - bearerAuth: []
+        requestBody:
+            content:
+                'application/json':
+                    schema:
+                        properties:
+                            name:
+                                type: string
+                            description:
+                                type: string
+                        required:
+                            - name
+                        example:
+                            name: 'Admin'
+                            description: 'Admin All User'
+            required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+    get:
+        summary: Get roles
+        description: Get roles
+        tags:
+            - roles
+        security:
+            - bearerAuth: []
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'

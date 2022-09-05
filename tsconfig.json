@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es2017",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "esModuleInterop": false,
-    "strict": true,
-    "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "./src/@types/index.d.ts"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es2017",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "esModuleInterop": false,
+        "strict": true,
+        "baseUrl": ".",
+        "typeRoots": ["node_modules/@types", "./src/@types/index.d.ts"]
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "src/**/__test__"]
 }

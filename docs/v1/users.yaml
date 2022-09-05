@@ -1,0 +1,155 @@
+/users:
+    post:
+        summary: Create user
+        description: Create user
+        tags:
+            - users
+        security:
+            - bearerAuth: []
+        requestBody:
+            content:
+                'application/json':
+                    schema:
+                        properties:
+                            email:
+                                type: string
+                                format: email
+                            password:
+                                type: string
+                            firstName:
+                                type: string
+                            lastName:
+                                type: string
+                            roleId:
+                                type: number
+                        required:
+                            - email
+                            - password
+                            - firstName
+                        example:
+                            email: 'user@mail.com'
+                            password: 'user'
+                            firstName: 'John'
+                            lastName: 'Doe'
+                            roleId: 1
+            required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+    get:
+        summary: Get users
+        description: Get users
+        tags:
+            - users
+        security:
+            - bearerAuth: []
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+/users/{id}:
+    get:
+        summary: Get user detail
+        description: Get user detail
+        tags:
+            - users
+        security:
+            - bearerAuth: []
+        parameters:
+            - in: path
+              name: id
+              schema:
+                  type: number
+              required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+    put:
+        summary: Update user
+        description: Update user
+        tags:
+            - users
+        security:
+            - bearerAuth: []
+        parameters:
+            - in: path
+              name: id
+              schema:
+                  type: number
+              required: true
+        requestBody:
+            content:
+                'application/json':
+                    schema:
+                        properties:
+                            firstName:
+                                type: string
+                            lastName:
+                                type: string
+                            roleId:
+                                type: number
+                        required:
+                            - firstName
+                        example:
+                            firstName: 'John'
+                            lastName: 'Doe'
+                            roleId: 1
+            required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'
+    delete:
+        summary: Delete user
+        description: Delete user
+        tags:
+            - users
+        security:
+            - bearerAuth: []
+        parameters:
+            - in: path
+              name: id
+              schema:
+                  type: number
+              required: true
+        responses:
+            200:
+                $ref: '#/components/responses/200'
+            400:
+                $ref: '#/components/responses/400'
+            401:
+                $ref: '#/components/responses/401'
+            403:
+                $ref: '#/components/responses/403'
+            422:
+                $ref: '#/components/responses/422'

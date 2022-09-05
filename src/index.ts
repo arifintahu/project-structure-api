@@ -1,17 +1,22 @@
-import Logger from './api/lib/logger';
-import { syncDB } from './config';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { Server } from 'net';
-import { Application } from 'express';
-import { PORT } from './constants';
 import { createServer } from './server';
+import Logger from './utils/logger';
+import AppConfig from './config/appConfig';
 
-export function startServer(): Server {
-  const app: Application = createServer();
+const PORT = AppConfig.app.port;
 
-  return app.listen(PORT, async () => {
-    await syncDB();
-    Logger.debug(`Server is listening on port ${PORT}`);
-  });
+function startServer(): Server {
+    const app = createServer();
+
+    return app.listen(PORT, () => {
+        Logger.debug(
+            `App ${AppConfig.app.name} with api version ${AppConfig.app.apiVersion} is starting`
+        );
+        Logger.debug(`App is listening on port ${PORT}`);
+    });
 }
 
 startServer();

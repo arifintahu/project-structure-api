@@ -49,9 +49,9 @@ Building project with standardized structure could save much our time. We could 
 
 Here's why:
 
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others.
-- You shouldn't be doing the same tasks over and over like structuring project
-- You should implement dry principles to the rest of your life
+-   Your time should be focused on creating something amazing. A project that solves a problem and helps others.
+-   You shouldn't be doing the same tasks over and over like structuring project
+-   You should implement dry principles to the rest of your life
 
 Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this project template!
 
@@ -61,58 +61,51 @@ Of course, no one template will serve all projects since your needs may be diffe
 
 This project structure is built using
 
-- [Express.js](https://expressjs.com/)
-- [Sequelize](https://sequelize.org/)
-- [Swagger](https://swagger.io/)
-- [Typescript](https://www.typescriptlang.org/)
-- [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
-- [Postgresql](https://www.postgresql.org/)
-- [Mocha](https://mochajs.org/)
-- [Supertest](https://www.npmjs.com/package/supertest)
+-   [Express.js](https://expressjs.com/)
+-   [Sequelize](https://sequelize.org/)
+-   [Swagger](https://swagger.io/)
+-   [Typescript](https://www.typescriptlang.org/)
+-   [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
+-   [Postgresql](https://www.postgresql.org/)
+-   [Jest](https://jestjs.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Features
 
-- Everything is modular and unit testable
-- Typescript everything
-- Express API with dependency injected routes, controllers, repositories, middleware, and services
-- Centralized configuration loading and validation
+-   Everything is modular and unit testable
+-   Typescript everything
+-   Project API structures with routes, controllers, models, repositories, middlewares, and services
+-   Centralized configuration input validator
 
 ### Folder Structure
 
 ```
 ├── .husky/                     # Pre-commit config for lint staged
+├── docs/                       # Swagger API docs
 ├── src/                        # All application source
-├──── @types/                   # Type definition
+├──── @types/                   # Type definition for modules
 |
 ├──── api/
 ├────── controllers/            # Define all controllers
-├────── helpers/                # Define all helpers
-├────── lib/
-├──────── logger.ts             # Define logger
-├────── middlewares/
-├──────── authorization.ts      # Define authorization using JWT
-├──────── morgan.ts             # Define morgan
-├────── models/                 # Define all schema models
+├────── middlewares/            # Define all middlewares
+├────── models/                 # Define all sequelize models
 ├────── repositories/           # Define all repositories
 ├────── routes/
 ├──────── v1/                   # Define all v1 routes
 ├────── services/               # Define all services
-├────── validations/            # Define all controller validations
+├────── types/                  # Define all input types
 |
 ├──── config/
-├────── swagger/                # Define swagger configuration
-├────── database.ts             # Define postgres database connection
-├────── express.ts              # Define express configuration
+├────── appConfig.ts            # Define app configuration
 |
 ├──── constants/                # Define all constants
+├──── database/                 # Define database connection and sync tables
+├──── utils/                    # Define reusable libs
 ├──── server.ts                 # Create express config
 ├──── index.ts                  # ENTRYPOINT - Start server
 |
-├── test/                       # End-to-end test
-|
-└── Lots of random build-related files
+└── ...
 ```
 
 <!-- GETTING STARTED -->
@@ -125,45 +118,37 @@ To start project, just clone this repo or [Use this template](https://github.com
 
 Before installation, make sure you have the following prerequisites
 
-- NPM
-  ```sh
-  npm install npm@latest -g
-  ```
-- Postgresql server
+-   NPM
+    ```sh
+    npm install npm@latest -g
+    ```
+-   Postgresql server
 
 ### Installation
 
 1. Clone the repo or simply select [use this template](https://github.com/arifintahu/project-structure-api/generate)
-   ```sh
-   git clone https://github.com/arifintahu/project-structure-api.git
-   ```
+    ```sh
+    git clone https://github.com/arifintahu/project-structure-api.git
+    ```
 2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Create .env file in main directory
-   ```sh
-   touch .env
-   ```
-4. Write the following example environment
-   ```sh
-   NODE_ENV=development
-   PORT=3001
-   DB_HOST=localhost
-   DB_NAME=test
-   DB_USER=postgres
-   DB_PASS=postgres
-   DB_PORT=5432
-   DB_LOG=true
-   ```
+    ```sh
+    npm ci
+    ```
+3. Create `.env` file in main directory
+4. Copy and customize envs from `.env.example`
 5. Test and build the project
-   ```sh
-   npm run build
-   ```
-6. Run the server
-   ```sh
-   npm run start
-   ```
+    ```sh
+    npm run build
+    ```
+6. Sync database tables
+    ```sh
+    npm run sync-db
+    ```
+7. Run the server
+    ```sh
+    npm run start
+    ```
+8. Access swagger docs from `localhost:3001/docs/v1`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

@@ -1,11 +1,10 @@
-import * as express from 'express';
+import 'express';
+import { UserOutput } from '../api/models/User';
 
 declare global {
-  namespace Express {
-    interface Request {
-      userdata: {
-        email: string;
-      };
+    namespace Express {
+        interface Request {
+            userdata: UserOutput;
+        }
     }
-  }
 }
