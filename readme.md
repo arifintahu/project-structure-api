@@ -67,8 +67,7 @@ This project structure is built using
 -   [Typescript](https://www.typescriptlang.org/)
 -   [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
 -   [Postgresql](https://www.postgresql.org/)
--   [Mocha](https://mochajs.org/)
--   [Supertest](https://www.npmjs.com/package/supertest)
+-   [Jest](https://jestjs.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -76,43 +75,37 @@ This project structure is built using
 
 -   Everything is modular and unit testable
 -   Typescript everything
--   Express API with dependency injected routes, controllers, repositories, middleware, and services
--   Centralized configuration loading and validation
+-   Project API structures with routes, controllers, models, repositories, middlewares, and services
+-   Centralized configuration input validator
 
 ### Folder Structure
 
 ```
 ├── .husky/                     # Pre-commit config for lint staged
+├── docs/                       # Swagger API docs
 ├── src/                        # All application source
-├──── @types/                   # Type definition
+├──── @types/                   # Type definition for modules
 |
 ├──── api/
 ├────── controllers/            # Define all controllers
-├────── helpers/                # Define all helpers
-├────── lib/
-├──────── logger.ts             # Define logger
-├────── middlewares/
-├──────── authorization.ts      # Define authorization using JWT
-├──────── morgan.ts             # Define morgan
-├────── models/                 # Define all schema models
+├────── middlewares/            # Define all middlewares
+├────── models/                 # Define all sequelize models
 ├────── repositories/           # Define all repositories
 ├────── routes/
 ├──────── v1/                   # Define all v1 routes
 ├────── services/               # Define all services
-├────── validations/            # Define all controller validations
+├────── types/                  # Define all input types
 |
 ├──── config/
-├────── swagger/                # Define swagger configuration
-├────── database.ts             # Define postgres database connection
-├────── express.ts              # Define express configuration
+├────── appConfig.ts            # Define app configuration
 |
 ├──── constants/                # Define all constants
+├──── database/                 # Define database connection and sync tables
+├──── utils/                    # Define reusable libs
 ├──── server.ts                 # Create express config
 ├──── index.ts                  # ENTRYPOINT - Start server
 |
-├── test/                       # End-to-end test
-|
-└── Lots of random build-related files
+└── ...
 ```
 
 <!-- GETTING STARTED -->
@@ -139,31 +132,23 @@ Before installation, make sure you have the following prerequisites
     ```
 2. Install NPM packages
     ```sh
-    npm install
+    npm ci
     ```
-3. Create .env file in main directory
-    ```sh
-    touch .env
-    ```
-4. Write the following example environment
-    ```sh
-    NODE_ENV=development
-    PORT=3001
-    DB_HOST=localhost
-    DB_NAME=test
-    DB_USER=postgres
-    DB_PASS=postgres
-    DB_PORT=5432
-    DB_LOG=true
-    ```
+3. Create `.env` file in main directory
+4. Copy and customize envs from `.env.example`
 5. Test and build the project
     ```sh
     npm run build
     ```
-6. Run the server
+6. Sync database tables
+    ```sh
+    npm run sync-db
+    ```
+7. Run the server
     ```sh
     npm run start
     ```
+8. Access swagger docs from `localhost:3001/docs/v1`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
