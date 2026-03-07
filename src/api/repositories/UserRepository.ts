@@ -1,24 +1,39 @@
 import User, { UserInput, UserInputUpdate, UserOutput } from '../models/User';
 import Role from '../models/Role';
-
-interface IUserRepository {
-    createUser(payload: UserInput): Promise<UserOutput>;
-    getUsers(): Promise<UserOutput[]>;
-    getUserDetail(userId: number): Promise<UserOutput | null>;
-    getUserByEmail(email: string): Promise<UserOutput | null>;
-    updateUser(userId: number, payload: UserInputUpdate): Promise<boolean>;
-    deleteUser(userId: number): Promise<boolean>;
-}
+import { IUserRepository } from './interfaces/IUserRepository';
+import {
+    PaginationOptions,
+    PaginatedResult,
+    DEFAULT_PAGE,
+    DEFAULT_LIMIT
+} from '../types/pagination';
 
 class UserRepository implements IUserRepository {
     createUser(payload: UserInput): Promise<UserOutput> {
         return User.create(payload);
     }
 
-    getUsers(): Promise<UserOutput[]> {
-        return User.findAll({
-            attributes: ['id', 'roleId', 'firstName', 'lastName', 'email']
+    async getUsers(
+        options?: PaginationOptions
+    ): Promise<PaginatedResult<UserOutput>> {
+        const page = options?.page || DEFAULT_PAGE;
+        const limit = options?.limit || DEFAULT_LIMIT;
+        const offset = (page - 1) * limit;
+
+        const { rows, count } = await User.findAndCountAll({
+            attributes: ['id', 'roleId', 'firstName', 'lastName', 'email'],
+            limit,
+            offset,
+            order: [['id', 'ASC']]
         });
+
+        return {
+            items: rows,
+            total: count,
+            page,
+            limit,
+            totalPages: Math.ceil(count / limit)
+        };
     }
 
     getUserDetail(userId: number): Promise<UserOutput | null> {

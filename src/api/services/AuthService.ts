@@ -1,31 +1,33 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
 import { UserInput, UserOutput } from '../models/User';
 import JWT from '../../utils/jwt';
-
-interface IAuthService {
-    login(payload: UserInput): Promise<string>;
-    signUp(payload: UserInput): Promise<UserOutput>;
-}
+import { IAuthService } from './interfaces/IAuthService';
+import {
+    NotFoundError,
+    UnauthorizedError,
+    ConflictError,
+    InternalError
+} from '../../errors/AppError';
 
 class AuthService implements IAuthService {
     async login(payload: UserInput): Promise<string> {
         const user = await UserRepository.getUserByEmail(payload.email);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundError('User not found');
         }
 
-        const isValid = bcrypt.compareSync(payload.password, user.password);
+        const isValid = await bcrypt.compare(payload.password, user.password);
 
         if (!isValid) {
-            throw new Error('Email and Password is not match');
+            throw new UnauthorizedError('Email and Password is not match');
         }
 
         const token = await JWT.signToken(user.id);
 
         if (!token) {
-            throw new Error('Invalid token');
+            throw new InternalError('Invalid token');
         }
 
         return token;
@@ -35,15 +37,10 @@ class AuthService implements IAuthService {
         const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
-            throw new Error('Email must be unique');
+            throw new ConflictError('Email must be unique');
         }
 
-        const hashedPassword = bcrypt.hashSync(payload.password, 5);
-
-        return UserRepository.createUser({
-            ...payload,
-            password: hashedPassword
-        });
+        return UserRepository.createUser(payload);
     }
 }
 

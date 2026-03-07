@@ -1,0 +1,13 @@
+node_modules
+dist
+logs
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.md
+.husky
+.vscode
+coverage
+C:\tmp

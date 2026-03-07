@@ -4,7 +4,7 @@ import mockResource from './mockResource';
 
 jest.mock('../../models/Role');
 
-const MockedRole = jest.mocked(Role, true);
+const MockedRole = jest.mocked(Role);
 
 describe('RoleRepository', () => {
     describe('RoleRepository.__createRole', () => {
@@ -27,7 +27,7 @@ describe('RoleRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedRole.create).toHaveBeenCalledTimes(1);
-            expect(MockedRole.create).toBeCalledWith(mockInput);
+            expect(MockedRole.create).toHaveBeenCalledWith(mockInput);
         });
     });
 
@@ -49,7 +49,7 @@ describe('RoleRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedRole.findAll).toHaveBeenCalledTimes(1);
-            expect(MockedRole.findAll).toBeCalledWith();
+            expect(MockedRole.findAll).toHaveBeenCalledWith();
         });
     });
 
@@ -75,7 +75,7 @@ describe('RoleRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedRole.findOne).toHaveBeenCalledTimes(1);
-            expect(MockedRole.findOne).toBeCalledWith(mockModelOptions);
+            expect(MockedRole.findOne).toHaveBeenCalledWith(mockModelOptions);
         });
     });
 });

@@ -1,4 +1,4 @@
-import * as winston from 'winston';
+import winston from 'winston';
 import AppConfig from '../../config/appConfig';
 
 const levels = {
@@ -23,7 +23,7 @@ const colors = {
 
 winston.addColors(colors);
 
-const format = winston.format.combine(
+const devFormat = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
     winston.format.colorize({ all: true }),
     winston.format.printf(
@@ -31,20 +31,25 @@ const format = winston.format.combine(
     )
 );
 
-const transports = [
+const prodFormat = winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+);
+
+const devTransports: winston.transport[] = [
     new winston.transports.Console(),
-    new winston.transports.File({
-        filename: 'logs/error.log',
-        level: 'error'
-    }),
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
     new winston.transports.File({ filename: 'logs/all.log' })
 ];
+
+const prodTransports: winston.transport[] = [new winston.transports.Console()];
 
 const Logger = winston.createLogger({
     level: level(),
     levels,
-    format,
-    transports
+    format: AppConfig.app.isDevelopment ? devFormat : prodFormat,
+    transports: AppConfig.app.isDevelopment ? devTransports : prodTransports
 });
 
 export default Logger;

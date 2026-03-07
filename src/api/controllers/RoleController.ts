@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import RoleService from '../services/RoleService';
 import { CreateRoleType } from '../types/role';
+import ApiResponse from '../../utils/response/ApiResponse';
 
 class RoleController {
     async createRole(
@@ -11,10 +12,7 @@ class RoleController {
         try {
             const payload: CreateRoleType = req.body;
             const role = await RoleService.createRole(payload);
-            res.status(200).send({
-                message: 'Role created successfully',
-                data: role
-            });
+            ApiResponse.success(res, 'Role created successfully', role, 201);
         } catch (error) {
             next(error);
         }
@@ -27,10 +25,7 @@ class RoleController {
     ): Promise<void> {
         try {
             const roles = await RoleService.getRoles();
-            res.status(200).send({
-                message: 'Roles fetched successfully',
-                data: roles
-            });
+            ApiResponse.success(res, 'Roles fetched successfully', roles);
         } catch (error) {
             next(error);
         }

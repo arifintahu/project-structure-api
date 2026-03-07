@@ -1,10 +1,5 @@
 import Role, { RoleInput, RoleOutput } from '../models/Role';
-
-interface IRoleRepository {
-    createRole(payload: RoleInput): Promise<RoleOutput>;
-    getRoles(): Promise<RoleOutput[]>;
-    getRoleBySlug(slug: string): Promise<RoleOutput | null>;
-}
+import { IRoleRepository } from './interfaces/IRoleRepository';
 
 class RoleRepository implements IRoleRepository {
     createRole(payload: RoleInput): Promise<RoleOutput> {

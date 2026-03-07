@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/UserService';
 import { CreateUserType, UpdateUserType } from '../types/user';
+import ApiResponse from '../../utils/response/ApiResponse';
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from '../types/pagination';
 
 class UserController {
     async createUser(
@@ -11,10 +13,7 @@ class UserController {
         try {
             const payload: CreateUserType = req.body;
             const user = await UserService.createUser(payload);
-            res.status(200).send({
-                message: 'User created successfully',
-                data: user
-            });
+            ApiResponse.success(res, 'User created successfully', user, 201);
         } catch (error) {
             next(error);
         }
@@ -26,11 +25,10 @@ class UserController {
         next: NextFunction
     ): Promise<void> {
         try {
-            const user = await UserService.getUsers();
-            res.status(200).send({
-                message: 'Users fetched successfully',
-                data: user
-            });
+            const page = Number(req.query.page) || DEFAULT_PAGE;
+            const limit = Number(req.query.limit) || DEFAULT_LIMIT;
+            const result = await UserService.getUsers({ page, limit });
+            ApiResponse.paginated(res, 'Users fetched successfully', result);
         } catch (error) {
             next(error);
         }
@@ -44,10 +42,7 @@ class UserController {
         try {
             const userId = Number(req.params.id);
             const user = await UserService.getUserDetail(userId);
-            res.status(200).send({
-                message: 'User details fetched successfully',
-                data: user
-            });
+            ApiResponse.success(res, 'User details fetched successfully', user);
         } catch (error) {
             next(error);
         }
@@ -62,9 +57,7 @@ class UserController {
             const userId = Number(req.params.id);
             const payload: UpdateUserType = req.body;
             await UserService.updateUser(userId, payload);
-            res.status(200).send({
-                message: 'User updated successfully'
-            });
+            ApiResponse.success(res, 'User updated successfully');
         } catch (error) {
             next(error);
         }
@@ -78,9 +71,7 @@ class UserController {
         try {
             const userId = Number(req.params.id);
             await UserService.deleteUser(userId);
-            res.status(200).send({
-                message: 'User deleted successfully'
-            });
+            ApiResponse.success(res, 'User deleted successfully');
         } catch (error) {
             next(error);
         }

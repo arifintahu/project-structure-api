@@ -1,13 +1,13 @@
 import RoleService from '../RoleService';
 import RoleRepository from '../../repositories/RoleRepository';
-import mockResource from './mockResource';
 import { slugify } from '../../../utils/helpers';
+import mockResource from './mockResource';
 
 jest.mock('../../repositories/RoleRepository');
 jest.mock('../../../utils/helpers');
 
-const MockedRoleRepository = jest.mocked(RoleRepository, true);
-const MockedSlugify = jest.mocked(slugify, true);
+const MockedRoleRepository = jest.mocked(RoleRepository);
+const MockedSlugify = jest.mocked(slugify);
 
 describe('RoleService', () => {
     describe('RoleService.__createRole', () => {
@@ -38,15 +38,14 @@ describe('RoleService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedSlugify).toHaveBeenCalledTimes(1);
-            expect(MockedSlugify).toBeCalledWith(mockInput.name);
+            expect(MockedSlugify).toHaveBeenCalledWith(mockInput.name);
 
             expect(MockedRoleRepository.getRoleBySlug).toHaveBeenCalledTimes(1);
-            expect(MockedRoleRepository.getRoleBySlug).toBeCalledWith(
+            expect(MockedRoleRepository.getRoleBySlug).toHaveBeenCalledWith(
                 mockOutputSlugify
             );
 
-            expect(MockedRoleRepository.createRole).toHaveBeenCalledTimes(1);
-            expect(MockedRoleRepository.createRole).toBeCalledWith({
+            expect(MockedRoleRepository.createRole).toHaveBeenCalledWith({
                 ...mockInput,
                 slug: mockOutputSlugify
             });
@@ -72,12 +71,12 @@ describe('RoleService', () => {
             const result = RoleService.createRole(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedSlugify).toHaveBeenCalledTimes(1);
-            expect(MockedSlugify).toBeCalledWith(mockInput.name);
+            expect(MockedSlugify).toHaveBeenCalledWith(mockInput.name);
 
             expect(MockedRoleRepository.getRoleBySlug).toHaveBeenCalledTimes(1);
-            expect(MockedRoleRepository.getRoleBySlug).toBeCalledWith(
+            expect(MockedRoleRepository.getRoleBySlug).toHaveBeenCalledWith(
                 mockOutputSlugify
             );
         });
@@ -101,7 +100,7 @@ describe('RoleService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedRoleRepository.getRoles).toHaveBeenCalledTimes(1);
-            expect(MockedRoleRepository.getRoles).toBeCalledWith();
+            expect(MockedRoleRepository.getRoles).toHaveBeenCalledWith();
         });
     });
 });

@@ -1,19 +1,23 @@
 import AppConfig from '../../config/appConfig';
-import * as jwt from 'jsonwebtoken';
+import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 
 class JWT {
-    signToken(userId: number, expires = '1d'): Promise<string | undefined> {
+    signToken(
+        userId: number,
+        expires: string = '1d'
+    ): Promise<string | undefined> {
         return new Promise((resolve, reject) => {
+            const options: SignOptions = {
+                expiresIn: expires as any
+            };
             jwt.sign(
                 {
                     id: userId,
                     iat: Date.now()
                 },
                 AppConfig.app.secret,
-                {
-                    expiresIn: expires
-                },
-                (err, token) => {
+                options,
+                (err: Error | null, token: string | undefined) => {
                     if (err) {
                         reject(err);
                     }
@@ -23,13 +27,13 @@ class JWT {
         });
     }
 
-    verifyToken(token: string): Promise<jwt.JwtPayload | undefined> {
+    verifyToken(token: string): Promise<JwtPayload | undefined> {
         return new Promise((resolve, reject) => {
             jwt.verify(token, AppConfig.app.secret, (err, decoded) => {
                 if (err) {
                     reject(err);
                 }
-                resolve(decoded);
+                resolve(decoded as JwtPayload | undefined);
             });
         });
     }

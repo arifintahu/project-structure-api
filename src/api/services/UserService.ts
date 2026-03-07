@@ -1,40 +1,31 @@
-import * as bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
 import { UserInput, UserInputUpdate, UserOutput } from '../models/User';
-
-interface IUserService {
-    createUser(payload: UserInput): Promise<UserOutput>;
-    getUsers(): Promise<UserOutput[]>;
-    getUserDetail(userId: number): Promise<UserOutput>;
-    updateUser(userId: number, data: UserInputUpdate): Promise<boolean>;
-    deleteUser(userId: number): Promise<boolean>;
-}
+import { IUserService } from './interfaces/IUserService';
+import { NotFoundError, ConflictError } from '../../errors/AppError';
+import { PaginationOptions, PaginatedResult } from '../types/pagination';
 
 class UserService implements IUserService {
     async createUser(payload: UserInput): Promise<UserOutput> {
         const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
-            throw new Error('Email must be unique');
+            throw new ConflictError('Email must be unique');
         }
 
-        const hashedPassword = bcrypt.hashSync(payload.password, 5);
-
-        return UserRepository.createUser({
-            ...payload,
-            password: hashedPassword
-        });
+        return UserRepository.createUser(payload);
     }
 
-    getUsers(): Promise<UserOutput[]> {
-        return UserRepository.getUsers();
+    getUsers(
+        options?: PaginationOptions
+    ): Promise<PaginatedResult<UserOutput>> {
+        return UserRepository.getUsers(options);
     }
 
     async getUserDetail(userId: number): Promise<UserOutput> {
         const user = await UserRepository.getUserDetail(userId);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundError('User not found');
         }
 
         return user;
@@ -47,7 +38,7 @@ class UserService implements IUserService {
         const user = await UserRepository.getUserDetail(userId);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundError('User not found');
         }
 
         return UserRepository.updateUser(userId, payload);
@@ -57,7 +48,7 @@ class UserService implements IUserService {
         const user = await UserRepository.getUserDetail(userId);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundError('User not found');
         }
 
         return UserRepository.deleteUser(userId);
