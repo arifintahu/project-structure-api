@@ -25,8 +25,8 @@ const mainRouter: Router = Router();
  *               password:
  *                 type: string
  *           example:
- *             email: admin@mail.com
- *             password: admin
+ *             email: user@mail.com
+ *             password: password123
  *     responses:
  *       200:
  *         description: Login successful
@@ -69,7 +69,7 @@ mainRouter
  *                 type: string
  *           example:
  *             email: user@mail.com
- *             password: user
+ *             password: password123
  *             firstName: John
  *             lastName: Doe
  *     responses:
