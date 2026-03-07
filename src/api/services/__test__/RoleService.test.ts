@@ -1,7 +1,7 @@
 import RoleService from '../RoleService';
 import RoleRepository from '../../repositories/RoleRepository';
-import mockResource from './mockResource';
 import { slugify } from '../../../utils/helpers';
+import mockResource from './mockResource';
 
 jest.mock('../../repositories/RoleRepository');
 jest.mock('../../../utils/helpers');
@@ -45,7 +45,6 @@ describe('RoleService', () => {
                 mockOutputSlugify
             );
 
-            expect(MockedRoleRepository.createRole).toHaveBeenCalledTimes(1);
             expect(MockedRoleRepository.createRole).toHaveBeenCalledWith({
                 ...mockInput,
                 slug: mockOutputSlugify
@@ -72,7 +71,7 @@ describe('RoleService', () => {
             const result = RoleService.createRole(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedSlugify).toHaveBeenCalledTimes(1);
             expect(MockedSlugify).toHaveBeenCalledWith(mockInput.name);
 

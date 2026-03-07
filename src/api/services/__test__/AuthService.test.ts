@@ -76,7 +76,7 @@ describe('AuthService', () => {
             const result = AuthService.login(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
@@ -105,7 +105,7 @@ describe('AuthService', () => {
             const result = AuthService.login(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
@@ -137,7 +137,7 @@ describe('AuthService', () => {
             const result = AuthService.login(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
@@ -158,15 +158,12 @@ describe('AuthService', () => {
                 mockResource.AuthService.signUp.POSITIVE_CASE_INPUT;
             const mockUserEmailOutput =
                 mockResource.AuthService.signUp.CASE_NULL_USER_EMAIL;
-            const mockHashOutput =
-                mockResource.AuthService.signUp.BCRYPT_HASH_OUTPUT;
             const mockOutput: any =
                 mockResource.AuthService.signUp.POSITIVE_CASE_OUTPUT;
 
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockUserEmailOutput
             );
-            MockedBcrypt.hash.mockResolvedValue(mockHashOutput as never);
             MockedUserRepository.createUser.mockResolvedValue(mockOutput);
 
             //act
@@ -181,17 +178,10 @@ describe('AuthService', () => {
                 mockInput.email
             );
 
-            expect(MockedBcrypt.hash).toHaveBeenCalledTimes(1);
-            expect(MockedBcrypt.hash).toHaveBeenCalledWith(
-                mockInput.password,
-                10
-            );
-
             expect(MockedUserRepository.createUser).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.createUser).toHaveBeenCalledWith({
-                ...mockInput,
-                password: mockHashOutput
-            });
+            expect(MockedUserRepository.createUser).toHaveBeenCalledWith(
+                mockInput
+            );
         });
 
         it('should return error email exist', () => {
@@ -210,7 +200,7 @@ describe('AuthService', () => {
             const result = AuthService.signUp(mockInput);
 
             //assert
-            expect(result).rejects.toThrowError(errorMessage);
+            expect(result).rejects.toThrow(errorMessage);
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );

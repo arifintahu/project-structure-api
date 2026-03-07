@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import AuthService from '../services/AuthService';
 import { LoginType, SignUpType } from '../types/auth';
+import ApiResponse from '../../utils/response/ApiResponse';
 
 class AuthController {
     async login(
@@ -11,10 +12,7 @@ class AuthController {
         try {
             const payload: LoginType = req.body;
             const token = await AuthService.login(payload);
-            res.status(200).send({
-                message: 'Logged in successfully',
-                data: token
-            });
+            ApiResponse.success(res, 'Logged in successfully', token);
         } catch (error) {
             next(error);
         }
@@ -28,9 +26,7 @@ class AuthController {
         try {
             const payload: SignUpType = req.body;
             await AuthService.signUp(payload);
-            res.status(200).send({
-                message: 'Signed up successfully'
-            });
+            ApiResponse.success(res, 'Signed up successfully', null, 201);
         } catch (error) {
             next(error);
         }

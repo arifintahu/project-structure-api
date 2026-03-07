@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import { validateEnv } from './config/validateEnv';
+validateEnv();
+
 import { Server } from 'net';
 import { createServer } from './server';
 import Logger from './utils/logger';

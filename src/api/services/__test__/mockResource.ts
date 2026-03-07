@@ -89,7 +89,7 @@ const mockResource = {
                 updatedAt: '2022-08-26 14:40:19',
                 deletedAt: null
             },
-            ERROR_MESSAGE: 'Role is exist'
+            ERROR_MESSAGE: 'Role already exists'
         },
         getRoles: {
             POSITIVE_CASE_OUTPUT: [

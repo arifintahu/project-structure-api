@@ -1,6 +1,9 @@
 import { Model, DataTypes, Optional } from 'sequelize';
+import bcrypt from 'bcrypt';
 import { db } from '../../database/config';
 import Role, { RoleOutput } from './Role';
+
+const BCRYPT_SALT_ROUNDS = 10;
 
 interface UserAttributes {
     id: number;
@@ -69,6 +72,18 @@ User.init(
         sequelize: db
     }
 );
+
+User.beforeCreate(async (user) => {
+    if (user.password) {
+        user.password = await bcrypt.hash(user.password, BCRYPT_SALT_ROUNDS);
+    }
+});
+
+User.beforeUpdate(async (user) => {
+    if (user.changed('password')) {
+        user.password = await bcrypt.hash(user.password, BCRYPT_SALT_ROUNDS);
+    }
+});
 
 User.belongsTo(Role, {
     foreignKey: 'roleId',
