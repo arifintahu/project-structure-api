@@ -7,18 +7,18 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API Documentation',
-            version: '1.0.0',
-            description: 'API Documentation with swagger',
-            termsOfService: 'http://example.com/terms/',
+            title: 'Project Structure API',
+            version: '3.0.0',
+            description:
+                'Production-ready API template with TypeScript, Express, and Sequelize',
             contact: {
                 name: 'API Support',
-                url: 'http://www.example.com/support',
-                email: 'support@example.com'
+                url: 'https://github.com/arifintahu/project-structure-api',
+                email: 'miftahul97@gmail.com'
             },
             license: {
-                name: 'Apache 2.0',
-                url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+                name: 'ISC',
+                url: 'https://opensource.org/licenses/ISC'
             }
         },
         servers: [
@@ -35,29 +35,47 @@ const options = {
                     bearerFormat: 'JWT'
                 }
             },
-            responses: {
-                '200': {
-                    description: 'OK',
-                    content: {
-                        'application/json': {}
+            schemas: {
+                SuccessResponse: {
+                    type: 'object',
+                    properties: {
+                        message: { type: 'string' },
+                        data: { type: 'object' }
                     }
                 },
-                '400': {
-                    description: 'Bad Request'
+                PaginatedResponse: {
+                    type: 'object',
+                    properties: {
+                        message: { type: 'string' },
+                        items: { type: 'array', items: { type: 'object' } },
+                        total: { type: 'integer' },
+                        page: { type: 'integer' },
+                        limit: { type: 'integer' },
+                        totalPages: { type: 'integer' }
+                    }
                 },
-                '401': {
-                    description: 'Unauthorized'
-                },
-                '403': {
-                    description: 'Forbidden'
-                },
-                '422': {
-                    description: 'Unprocessable entity'
+                ErrorResponse: {
+                    type: 'object',
+                    properties: {
+                        message: { type: 'string' },
+                        statusCode: { type: 'integer' }
+                    }
                 }
+            },
+            responses: {
+                '200': { description: 'OK' },
+                '201': { description: 'Created' },
+                '400': { description: 'Bad Request' },
+                '401': { description: 'Unauthorized' },
+                '403': { description: 'Forbidden' },
+                '404': { description: 'Not Found' },
+                '409': { description: 'Conflict' },
+                '422': { description: 'Unprocessable Entity' },
+                '429': { description: 'Too Many Requests' }
             }
         }
     },
-    apis: [`./docs/${apiVersion}/*.yaml`]
+    apis: ['./src/api/routes/**/*.ts']
 };
 
 export const specs = swaggerJsdoc(options);

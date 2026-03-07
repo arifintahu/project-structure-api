@@ -25,8 +25,10 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#architecture">Architecture</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#docker">Docker</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#api-reference">API Reference</a></li>
+    <li><a href="#openapi-spec">OpenAPI Spec</a></li>
     <li><a href="#testing">Testing</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -35,32 +37,43 @@
 
 ## About The Project
 
-A clean, scalable Node.js API boilerplate with proper separation of concerns. Built with modern tooling (Node 22+, TypeScript 5.7, ESLint 9) and best practices including typed error handling, pagination, environment validation, and comprehensive unit tests.
+A clean, scalable Node.js API boilerplate with proper separation of concerns. Built with modern tooling (Node 22+, TypeScript 5.7, ESLint 9) and production-grade features including security hardening, structured logging, health checks, graceful shutdown, and CI/CD.
 
 ### Built With
 
-| Category      | Technology                                                                                                    |
-| ------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Runtime**   | [Node.js](https://nodejs.org/) v22+                                                                           |
-| **Language**  | [TypeScript](https://www.typescriptlang.org/) 5.7                                                             |
-| **Framework** | [Express.js](https://expressjs.com/) 4.x                                                                      |
-| **ORM**       | [Sequelize](https://sequelize.org/) 6.x                                                                       |
-| **Database**  | [PostgreSQL](https://www.postgresql.org/)                                                                     |
-| **Auth**      | [JSON Web Token](https://www.npmjs.com/package/jsonwebtoken) + [bcrypt](https://www.npmjs.com/package/bcrypt) |
-| **Docs**      | [Swagger](https://swagger.io/) (swagger-jsdoc + swagger-ui-express)                                           |
-| **Testing**   | [Jest](https://jestjs.io/) + [ts-jest](https://kulshekhar.github.io/ts-jest/)                                 |
-| **Linting**   | [ESLint](https://eslint.org/) 9 (flat config) + [Prettier](https://prettier.io/)                              |
+| Category      | Technology                                                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Runtime**   | [Node.js](https://nodejs.org/) v22+                                                                                                  |
+| **Language**  | [TypeScript](https://www.typescriptlang.org/) 5.7                                                                                    |
+| **Framework** | [Express.js](https://expressjs.com/) 4.x                                                                                             |
+| **ORM**       | [Sequelize](https://sequelize.org/) 6.x                                                                                              |
+| **Database**  | [PostgreSQL](https://www.postgresql.org/)                                                                                            |
+| **Auth**      | [JSON Web Token](https://www.npmjs.com/package/jsonwebtoken) + [bcrypt](https://www.npmjs.com/package/bcrypt)                        |
+| **Security**  | [Helmet](https://helmetjs.github.io/) + [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)                       |
+| **Docs**      | [Swagger](https://swagger.io/) (swagger-jsdoc + swagger-ui-express)                                                                  |
+| **Testing**   | [Jest](https://jestjs.io/) + [ts-jest](https://kulshekhar.github.io/ts-jest/) + [Supertest](https://www.npmjs.com/package/supertest) |
+| **Linting**   | [ESLint](https://eslint.org/) 9 (flat config) + [Prettier](https://prettier.io/)                                                     |
+| **CI/CD**     | [GitHub Actions](https://github.com/features/actions)                                                                                |
+| **Container** | [Docker](https://www.docker.com/) + Docker Compose                                                                                   |
 
 ### Features
 
 - **Layered architecture** — Routes → Controllers → Services → Repositories → Models
+- **Security hardening** — Helmet headers, rate limiting, body size limits, env-based CORS
+- **Request tracing** — `X-Request-Id` UUID per request, included in logs and response headers
+- **Structured logging** — JSON format in production (for log aggregation), colorized in development
+- **Health check** — `GET /health` with database connectivity status
+- **Graceful shutdown** — Handles `SIGTERM`/`SIGINT`, drains connections, closes DB pool
+- **DB connection pooling** — Configurable Sequelize pool (min/max/acquire/idle)
 - **Typed error handling** — Custom `AppError` hierarchy with proper HTTP status codes
-- **Consistent API responses** — `ApiResponse` utility for uniform success/error responses
+- **Consistent API responses** — `ApiResponse` utility for uniform success/error/paginated responses
 - **Pagination** — Built-in paginated list endpoints with `?page=1&limit=10`
 - **Password hashing** — Automatic bcrypt hashing via Sequelize model hooks
 - **Environment validation** — Required env vars checked at startup with clear errors
 - **JWT authentication** — Token-based auth with role-based access control
-- **Swagger documentation** — Auto-generated API docs at `/docs/v1`
+- **OpenAPI 3.0** — Inline JSDoc specs co-located with routes + JSON spec export
+- **Docker** — Multi-stage build, non-root user, health check, Compose with PostgreSQL
+- **CI/CD** — GitHub Actions pipeline (lint → build → test)
 - **Pre-commit hooks** — Husky + lint-staged for ESLint and Prettier on commit
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -76,7 +89,7 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
 | Layer            | Responsibility                                 | Example                              |
 | ---------------- | ---------------------------------------------- | ------------------------------------ |
 | **Routes**       | HTTP method + URL mapping, middleware chaining | `POST /api/v1/users`                 |
-| **Middlewares**  | Auth, validation, error handling, logging      | `Auth.authenticate`, `Validate(...)` |
+| **Middlewares**  | Auth, validation, rate limiting, request ID    | `Auth.authenticate`, `Validate(...)` |
 | **Controllers**  | Parse request, call service, send response     | `UserController.createUser`          |
 | **Services**     | Business logic, validation rules               | `UserService.createUser`             |
 | **Repositories** | Database queries via Sequelize                 | `UserRepository.getUsers`            |
@@ -89,7 +102,7 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
 ### Prerequisites
 
 - **Node.js** v22 or higher
-- **PostgreSQL** server running
+- **PostgreSQL** server running (or use Docker)
 - **npm** (comes with Node.js)
 
 ### Installation
@@ -115,7 +128,7 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
     cp .env.example .env
     ```
 
-    Edit `.env` with your database credentials:
+    Edit `.env` with your settings:
 
     ```env
     NODE_ENV=development
@@ -123,7 +136,16 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
     SERVER=development
     PORT=3001
     SECRET=your-secret-key
+    API_VERSION=v1
 
+    # CORS
+    CORS_ORIGIN=*
+
+    # Rate Limiting
+    RATE_LIMIT_WINDOW_MS=900000
+    RATE_LIMIT_MAX=100
+
+    # Database
     DB_HOST=localhost
     DB_DATABASE=mydb
     DB_USERNAME=postgres
@@ -132,6 +154,10 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
     DB_DIALECT=postgres
     DB_TIMEZONE=Asia/Jakarta
     DB_LOG=true
+
+    # Database Connection Pool
+    DB_POOL_MIN=2
+    DB_POOL_MAX=10
     ```
 
     > **Required vars**: `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`. The app will fail fast with a clear error if any are missing.
@@ -160,7 +186,41 @@ Request → Route → Middleware (auth, validation) → Controller → Service �
     npm run start-watch
     ```
 
-7. **Open Swagger docs** at [http://localhost:3001/docs/v1](http://localhost:3001/docs/v1)
+7. **Verify**
+    - Health check: [http://localhost:3001/health](http://localhost:3001/health)
+    - Swagger docs: [http://localhost:3001/docs/v1](http://localhost:3001/docs/v1)
+    - OpenAPI spec: [http://localhost:3001/docs/v1/spec.json](http://localhost:3001/docs/v1/spec.json)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Docker
+
+Run the entire stack (API + PostgreSQL) with Docker Compose:
+
+```sh
+# Start services
+docker compose up --build
+
+# Start in background
+docker compose up --build -d
+
+# Stop services
+docker compose down
+
+# Stop and remove volumes
+docker compose down -v
+```
+
+The Compose file includes:
+
+- **app** — Node API built with multi-stage Dockerfile (non-root user, health check)
+- **db** — PostgreSQL 16 Alpine with persistent volume and health check
+
+Environment variables can be overridden via `.env` file or inline:
+
+```sh
+DB_PASSWORD=mysecret PORT=8080 docker compose up --build
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -177,9 +237,8 @@ Follow this pattern to add a new resource (e.g., `Product`):
 5. **Service** — Create `src/api/services/ProductService.ts`
 6. **Controller** — Create `src/api/controllers/ProductController.ts`
 7. **Validation** — Add rules in `src/api/middlewares/validator/requirements/`
-8. **Routes** — Create `src/api/routes/v1/products.ts` and register in `src/api/routes/v1/index.ts`
-9. **Swagger** — Add JSDoc annotations in `docs/`
-10. **Tests** — Add `__test__/` folders in repositories and services
+8. **Routes** — Create `src/api/routes/v1/products.ts` with inline `@swagger` JSDoc, register in `src/api/routes/v1/index.ts`
+9. **Tests** — Add `__test__/` folders in repositories and services
 
 ### Error Handling
 
@@ -259,6 +318,12 @@ Default: `page=1`, `limit=10`.
 
 ## API Reference
 
+### Health
+
+| Method | Endpoint  | Description                 | Auth |
+| ------ | --------- | --------------------------- | ---- |
+| `GET`  | `/health` | Health check with DB status | No   |
+
 ### Authentication
 
 | Method | Endpoint         | Description               | Auth |
@@ -287,6 +352,70 @@ Default: `page=1`, `limit=10`.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## OpenAPI Spec
+
+API documentation uses **OpenAPI 3.0** with inline `@swagger` JSDoc annotations co-located with route definitions. This means the spec stays in sync with the code automatically.
+
+### Swagger UI
+
+Available in development at `/docs/v1`:
+
+```
+http://localhost:3001/docs/v1
+```
+
+### JSON Spec Export
+
+Get the raw OpenAPI JSON spec (useful for client SDK generation):
+
+```
+GET http://localhost:3001/docs/v1/spec.json
+```
+
+Use this with tools like:
+
+- [openapi-generator](https://openapi-generator.tech/) — Generate client SDKs in any language
+- [Postman](https://www.postman.com/) — Import collection from OpenAPI spec
+- [Redoc](https://redocly.com/) — Alternative API docs renderer
+
+### Adding Docs to a New Route
+
+Add `@swagger` JSDoc comments directly above route definitions:
+
+```typescript
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get products
+ *     description: Get paginated list of products
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Products fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PaginatedResponse'
+ */
+productsRouter.route('/').get(Auth.authenticate, ProductController.getProducts);
+```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ## Testing
 
 ```sh
@@ -300,15 +429,23 @@ npm run test:noCoverage
 npx jest src/api/services/__test__/UserService.test.ts
 ```
 
-Tests use `jest.mock()` to isolate layers. Each service and repository has a `__test__/` folder with unit tests and shared mock resources.
+### Test Types
+
+| Type            | Location                 | Description                                |
+| --------------- | ------------------------ | ------------------------------------------ |
+| **Unit**        | `services/__test__/`     | Service business logic (mocked repos)      |
+| **Unit**        | `repositories/__test__/` | Repository data access (mocked models)     |
+| **Integration** | `routes/__test__/`       | Full HTTP request → response via supertest |
+
+Integration tests verify health check, request ID, security headers, authentication enforcement, and input validation.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Project Structure
 
 ```
+├── .github/workflows/ci.yml       # GitHub Actions CI pipeline
 ├── .husky/                         # Git hooks (pre-commit: lint-staged)
-├── docs/                           # Swagger API documentation
 ├── src/
 │   ├── @types/                     # Custom type declarations
 │   ├── api/
@@ -316,33 +453,40 @@ Tests use `jest.mock()` to isolate layers. Each service and repository has a `__
 │   │   ├── middlewares/
 │   │   │   ├── auth/               # JWT authentication & role checking
 │   │   │   ├── handlers/           # Global error handler
-│   │   │   ├── morgan/             # HTTP request logging
+│   │   │   ├── morgan/             # HTTP request logging (with request ID)
+│   │   │   ├── requestId/          # X-Request-Id generation
 │   │   │   └── validator/          # Input validation (express-validator)
 │   │   ├── models/                 # Sequelize models & type definitions
 │   │   ├── repositories/
 │   │   │   ├── interfaces/         # Repository contracts
+│   │   │   ├── __test__/           # Repository unit tests
 │   │   │   └── *.ts                # Data access layer
-│   │   ├── routes/v1/              # API route definitions
+│   │   ├── routes/
+│   │   │   ├── v1/                 # Route definitions with inline @swagger docs
+│   │   │   └── __test__/           # Integration tests (supertest)
 │   │   ├── services/
 │   │   │   ├── interfaces/         # Service contracts
 │   │   │   ├── __test__/           # Service unit tests
 │   │   │   └── *.ts                # Business logic layer
 │   │   └── types/                  # Request DTOs & pagination types
 │   ├── config/
-│   │   ├── appConfig.ts            # Centralized configuration
+│   │   ├── appConfig.ts            # Centralized configuration (CORS, rate limit, DB pool)
 │   │   └── validateEnv.ts          # Startup environment validation
 │   ├── constants/                  # App-wide constants
-│   ├── database/                   # DB connection & table sync
+│   ├── database/                   # DB connection (with pool config) & table sync
 │   ├── errors/
 │   │   └── AppError.ts             # Typed error class hierarchy
 │   ├── utils/
 │   │   ├── jwt/                    # JWT sign/verify helpers
-│   │   ├── logger/                 # Winston logger
+│   │   ├── logger/                 # Winston logger (JSON prod / colorized dev)
 │   │   ├── response/               # ApiResponse utility
-│   │   ├── swagger/                # Swagger config
+│   │   ├── swagger/                # OpenAPI config (scans route files)
 │   │   └── helpers.ts              # Misc utilities
-│   ├── server.ts                   # Express app setup
-│   └── index.ts                    # Entry point
+│   ├── server.ts                   # Express app (helmet, rate limit, CORS, health check)
+│   └── index.ts                    # Entry point (graceful shutdown)
+├── Dockerfile                      # Multi-stage build, non-root user
+├── docker-compose.yml              # App + PostgreSQL 16
+├── .dockerignore
 ├── eslint.config.mjs               # ESLint v9 flat config
 ├── jest.config.json                # Jest + ts-jest config
 ├── tsconfig.json                   # TypeScript config (ES2022, Node16)

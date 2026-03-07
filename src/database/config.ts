@@ -14,5 +14,11 @@ export const db: Sequelize = new Sequelize({
     port: AppConfig.db.port,
     timezone: AppConfig.db.timezone,
     dialect: AppConfig.db.dialect as Dialect,
-    logging: AppConfig.db.isLogging ? customLog : false
+    logging: AppConfig.db.isLogging ? customLog : false,
+    pool: {
+        min: AppConfig.db.pool.min,
+        max: AppConfig.db.pool.max,
+        acquire: AppConfig.db.pool.acquire,
+        idle: AppConfig.db.pool.idle
+    }
 });

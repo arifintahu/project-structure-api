@@ -9,6 +9,15 @@ const AppConfig = {
         apiVersion: process.env.API_VERSION || 'v1',
         secret: process.env.SECRET || 'j!89nKO5as&Js'
     },
+    cors: {
+        origin: process.env.CORS_ORIGIN || '*'
+    },
+    rateLimit: {
+        windowMs:
+            parseInt(<string>process.env.RATE_LIMIT_WINDOW_MS, 10) ||
+            15 * 60 * 1000,
+        max: parseInt(<string>process.env.RATE_LIMIT_MAX, 10) || 100
+    },
     db: {
         host: process.env.DB_HOST,
         database: process.env.DB_DATABASE,
@@ -17,7 +26,13 @@ const AppConfig = {
         port: parseInt(<string>process.env.DB_PORT, 10) || 5432,
         dialect: process.env.DB_DIALECT || 'postgres',
         timezone: process.env.DB_TIMEZONE || 'Asia/Jakarta',
-        isLogging: process.env.DB_LOG === 'true'
+        isLogging: process.env.DB_LOG === 'true',
+        pool: {
+            min: parseInt(<string>process.env.DB_POOL_MIN, 10) || 2,
+            max: parseInt(<string>process.env.DB_POOL_MAX, 10) || 10,
+            acquire: 30000,
+            idle: 10000
+        }
     }
 };
 
