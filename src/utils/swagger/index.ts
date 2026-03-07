@@ -1,4 +1,4 @@
-import * as swaggerJsdoc from 'swagger-jsdoc';
+import swaggerJsdoc from 'swagger-jsdoc';
 import AppConfig from '../../config/appConfig';
 
 const apiVersion = AppConfig.app.apiVersion;
@@ -49,7 +49,7 @@ const options = {
                     description: 'Unauthorized'
                 },
                 '403': {
-                    descriptipn: 'Forbidden'
+                    description: 'Forbidden'
                 },
                 '422': {
                     description: 'Unprocessable entity'

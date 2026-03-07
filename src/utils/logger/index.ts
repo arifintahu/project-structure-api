@@ -1,4 +1,4 @@
-import * as winston from 'winston';
+import winston from 'winston';
 import AppConfig from '../../config/appConfig';
 
 const levels = {

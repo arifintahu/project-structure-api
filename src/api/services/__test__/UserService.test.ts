@@ -1,13 +1,13 @@
 import UserService from '../UserService';
 import UserRepository from '../../repositories/UserRepository';
 import mockResource from './mockResource';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 jest.mock('../../repositories/UserRepository');
 jest.mock('bcrypt');
 
-const MockedUserRepository = jest.mocked(UserRepository, true);
-const MockedBycrypt = jest.mocked(bcrypt, true);
+const MockedUserRepository = jest.mocked(UserRepository);
+const MockedBcrypt = jest.mocked(bcrypt);
 
 describe('UserService', () => {
     describe('UserService.__createUser', () => {
@@ -29,7 +29,7 @@ describe('UserService', () => {
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockOutputUserEmail
             );
-            MockedBycrypt.hashSync.mockReturnValue(mockOutputBcryptHash);
+            MockedBcrypt.hash.mockResolvedValue(mockOutputBcryptHash as never);
             MockedUserRepository.createUser.mockResolvedValue(mockOutput);
 
             //act
@@ -40,18 +40,18 @@ describe('UserService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
 
-            expect(MockedBycrypt.hashSync).toHaveBeenCalledTimes(1);
-            expect(MockedBycrypt.hashSync).toBeCalledWith(
+            expect(MockedBcrypt.hash).toHaveBeenCalledTimes(1);
+            expect(MockedBcrypt.hash).toHaveBeenCalledWith(
                 mockInput.password,
-                5
+                10
             );
 
             expect(MockedUserRepository.createUser).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.createUser).toBeCalledWith({
+            expect(MockedUserRepository.createUser).toHaveBeenCalledWith({
                 ...mockInput,
                 password: mockOutputBcryptHash
             });
@@ -79,7 +79,7 @@ describe('UserService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
         });
@@ -103,7 +103,7 @@ describe('UserService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUserRepository.getUsers).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUsers).toBeCalledWith();
+            expect(MockedUserRepository.getUsers).toHaveBeenCalledWith();
         });
     });
 
@@ -127,7 +127,7 @@ describe('UserService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
         });
@@ -149,7 +149,7 @@ describe('UserService', () => {
             //assert
             expect(result).rejects.toThrowError(errorMessage);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
         });
@@ -183,12 +183,12 @@ describe('UserService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
 
             expect(MockedUserRepository.updateUser).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.updateUser).toBeCalledWith(
+            expect(MockedUserRepository.updateUser).toHaveBeenCalledWith(
                 mockInput.userId,
                 mockInput.payload
             );
@@ -216,7 +216,7 @@ describe('UserService', () => {
             //assert
             expect(result).rejects.toThrowError(errorMessage);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
         });
@@ -227,7 +227,7 @@ describe('UserService', () => {
             jest.clearAllMocks();
         });
 
-        it('should return success deelte user', async () => {
+        it('should return success delete user', async () => {
             //arrange
             const mockInput =
                 mockResource.UserService.deleteUser.POSITIVE_CASE_INPUT;
@@ -247,12 +247,12 @@ describe('UserService', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
 
             expect(MockedUserRepository.deleteUser).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.deleteUser).toBeCalledWith(
+            expect(MockedUserRepository.deleteUser).toHaveBeenCalledWith(
                 mockInput.userId
             );
         });
@@ -276,7 +276,7 @@ describe('UserService', () => {
             //assert
             expect(result).rejects.toThrowError(errorMessage);
             expect(MockedUserRepository.getUserDetail).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.getUserDetail).toBeCalledWith(
+            expect(MockedUserRepository.getUserDetail).toHaveBeenCalledWith(
                 mockInput.userId
             );
         });

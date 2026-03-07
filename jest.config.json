@@ -1,5 +1,6 @@
 {
     "displayName": "project-structure-api-test",
+    "preset": "ts-jest",
     "verbose": true,
     "roots": ["src/"],
     "collectCoverage": true,
@@ -9,5 +10,16 @@
         "**/src/api/services/**",
         "!**/src/api/repositories/__test__/**",
         "!**/src/api/services/__test__/**"
-    ]
+    ],
+    "transform": {
+        "^.+\\.ts$": [
+            "ts-jest",
+            {
+                "tsconfig": "tsconfig.json",
+                "diagnostics": {
+                    "ignoreDiagnostics": [151002]
+                }
+            }
+        ]
+    }
 }

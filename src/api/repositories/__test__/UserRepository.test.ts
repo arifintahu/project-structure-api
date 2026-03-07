@@ -5,7 +5,7 @@ import mockResource from './mockResource';
 
 jest.mock('../../models/User');
 
-const MockedUser = jest.mocked(User, true);
+const MockedUser = jest.mocked(User);
 
 describe('UserRepository', () => {
     describe('UserRepository.__createUser', () => {
@@ -28,7 +28,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.create).toHaveBeenCalledTimes(1);
-            expect(MockedUser.create).toBeCalledWith(mockInput);
+            expect(MockedUser.create).toHaveBeenCalledWith(mockInput);
         });
     });
 
@@ -52,7 +52,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.findAll).toHaveBeenCalledTimes(1);
-            expect(MockedUser.findAll).toBeCalledWith(mockModelOptions);
+            expect(MockedUser.findAll).toHaveBeenCalledWith(mockModelOptions);
         });
     });
 
@@ -78,7 +78,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.findByPk).toHaveBeenCalledTimes(1);
-            expect(MockedUser.findByPk).toBeCalledWith(mockInput.userId, {
+            expect(MockedUser.findByPk).toHaveBeenCalledWith(mockInput.userId, {
                 ...mockModelOptions,
                 include: [
                     {
@@ -113,7 +113,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.findOne).toHaveBeenCalledTimes(1);
-            expect(MockedUser.findOne).toBeCalledWith(mockModelOptions);
+            expect(MockedUser.findOne).toHaveBeenCalledWith(mockModelOptions);
         });
     });
 
@@ -144,7 +144,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.update).toHaveBeenCalledTimes(1);
-            expect(MockedUser.update).toBeCalledWith(
+            expect(MockedUser.update).toHaveBeenCalledWith(
                 mockInput.payload,
                 mockModelOptions
             );
@@ -175,7 +175,7 @@ describe('UserRepository', () => {
             //assert
             expect(result).toEqual(mockOutput);
             expect(MockedUser.destroy).toHaveBeenCalledTimes(1);
-            expect(MockedUser.destroy).toBeCalledWith(mockModelOptions);
+            expect(MockedUser.destroy).toHaveBeenCalledWith(mockModelOptions);
         });
     });
 });

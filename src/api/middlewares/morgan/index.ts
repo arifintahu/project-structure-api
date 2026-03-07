@@ -1,5 +1,4 @@
-import * as morgan from 'morgan';
-import { StreamOptions } from 'morgan';
+import morgan, { StreamOptions } from 'morgan';
 
 import Logger from '../../../utils/logger';
 

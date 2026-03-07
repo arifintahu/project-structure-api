@@ -1,7 +1,7 @@
-import * as express from 'express';
-import * as compression from 'compression';
-import * as cors from 'cors';
-import * as swaggerUi from 'swagger-ui-express';
+import express from 'express';
+import compression from 'compression';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import routesV1 from './api/routes/v1';
 import MorganMiddleware from './api/middlewares/morgan';
 import { Application } from 'express';

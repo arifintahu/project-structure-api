@@ -10,6 +10,7 @@ function errorHandler(
     err: Error,
     req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
 ) {
     const response: ResponseType = {};
@@ -19,7 +20,7 @@ function errorHandler(
             message: err.message,
             method: req.method,
             path: req.path,
-            params: req.route.path,
+            params: req.route?.path,
             body: req.body,
             query: req.query,
             stack: err.stack
@@ -30,7 +31,9 @@ function errorHandler(
             : 'Something wrong!';
     }
 
-    res.status(422).send(response);
+    const statusCode =
+        (err as Error & { statusCode?: number }).statusCode || 500;
+    res.status(statusCode).send(response);
 }
 
 export default errorHandler;

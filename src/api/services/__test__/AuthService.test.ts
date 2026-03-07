@@ -1,16 +1,16 @@
 import AuthService from '../AuthService';
 import UserRepository from '../../repositories/UserRepository';
 import mockResource from './mockResource';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import JWT from '../../../utils/jwt';
 
 jest.mock('../../repositories/UserRepository');
 jest.mock('../../../utils/jwt');
 jest.mock('bcrypt');
 
-const MockedUserRepository = jest.mocked(UserRepository, true);
-const MockedBycrypt = jest.mocked(bcrypt, true);
-const MockedJWT = jest.mocked(JWT, true);
+const MockedUserRepository = jest.mocked(UserRepository);
+const MockedBcrypt = jest.mocked(bcrypt);
+const MockedJWT = jest.mocked(JWT);
 
 describe('AuthService', () => {
     describe('AuthService.__login', () => {
@@ -32,7 +32,7 @@ describe('AuthService', () => {
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockUserEmailOutput
             );
-            MockedBycrypt.compareSync.mockReturnValue(mockCompareOutput);
+            MockedBcrypt.compare.mockResolvedValue(mockCompareOutput as never);
             MockedJWT.signToken.mockResolvedValue(mockTokenOutput);
 
             //act
@@ -43,18 +43,20 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
 
-            expect(MockedBycrypt.compareSync).toHaveBeenCalledTimes(1);
-            expect(MockedBycrypt.compareSync).toBeCalledWith(
+            expect(MockedBcrypt.compare).toHaveBeenCalledTimes(1);
+            expect(MockedBcrypt.compare).toHaveBeenCalledWith(
                 mockInput.password,
                 mockUserEmailOutput.password
             );
 
             expect(MockedJWT.signToken).toHaveBeenCalledTimes(1);
-            expect(MockedJWT.signToken).toBeCalledWith(mockUserEmailOutput.id);
+            expect(MockedJWT.signToken).toHaveBeenCalledWith(
+                mockUserEmailOutput.id
+            );
         });
 
         it('should return error user not found', () => {
@@ -78,7 +80,7 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
         });
@@ -97,7 +99,7 @@ describe('AuthService', () => {
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockUserEmailOutput
             );
-            MockedBycrypt.compareSync.mockReturnValue(mockCompareOutput);
+            MockedBcrypt.compare.mockResolvedValue(mockCompareOutput as never);
 
             //act
             const result = AuthService.login(mockInput);
@@ -107,7 +109,7 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
         });
@@ -128,7 +130,7 @@ describe('AuthService', () => {
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockUserEmailOutput
             );
-            MockedBycrypt.compareSync.mockReturnValue(mockCompareOutput);
+            MockedBcrypt.compare.mockResolvedValue(mockCompareOutput as never);
             MockedJWT.signToken.mockResolvedValue(mockTokenOutput);
 
             //act
@@ -139,7 +141,7 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
         });
@@ -150,7 +152,7 @@ describe('AuthService', () => {
             jest.clearAllMocks();
         });
 
-        it('should return success login', async () => {
+        it('should return success sign up', async () => {
             //arrange
             const mockInput =
                 mockResource.AuthService.signUp.POSITIVE_CASE_INPUT;
@@ -164,7 +166,7 @@ describe('AuthService', () => {
             MockedUserRepository.getUserByEmail.mockResolvedValue(
                 mockUserEmailOutput
             );
-            MockedBycrypt.hashSync.mockReturnValue(mockHashOutput);
+            MockedBcrypt.hash.mockResolvedValue(mockHashOutput as never);
             MockedUserRepository.createUser.mockResolvedValue(mockOutput);
 
             //act
@@ -175,18 +177,18 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
 
-            expect(MockedBycrypt.hashSync).toHaveBeenCalledTimes(1);
-            expect(MockedBycrypt.hashSync).toBeCalledWith(
+            expect(MockedBcrypt.hash).toHaveBeenCalledTimes(1);
+            expect(MockedBcrypt.hash).toHaveBeenCalledWith(
                 mockInput.password,
-                5
+                10
             );
 
             expect(MockedUserRepository.createUser).toHaveBeenCalledTimes(1);
-            expect(MockedUserRepository.createUser).toBeCalledWith({
+            expect(MockedUserRepository.createUser).toHaveBeenCalledWith({
                 ...mockInput,
                 password: mockHashOutput
             });
@@ -212,7 +214,7 @@ describe('AuthService', () => {
             expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledTimes(
                 1
             );
-            expect(MockedUserRepository.getUserByEmail).toBeCalledWith(
+            expect(MockedUserRepository.getUserByEmail).toHaveBeenCalledWith(
                 mockInput.email
             );
         });

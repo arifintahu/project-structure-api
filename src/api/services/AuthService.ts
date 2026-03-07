@@ -1,7 +1,9 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
 import { UserInput, UserOutput } from '../models/User';
 import JWT from '../../utils/jwt';
+
+const BCRYPT_SALT_ROUNDS = 10;
 
 interface IAuthService {
     login(payload: UserInput): Promise<string>;
@@ -16,7 +18,7 @@ class AuthService implements IAuthService {
             throw new Error('User not found');
         }
 
-        const isValid = bcrypt.compareSync(payload.password, user.password);
+        const isValid = await bcrypt.compare(payload.password, user.password);
 
         if (!isValid) {
             throw new Error('Email and Password is not match');
@@ -38,7 +40,10 @@ class AuthService implements IAuthService {
             throw new Error('Email must be unique');
         }
 
-        const hashedPassword = bcrypt.hashSync(payload.password, 5);
+        const hashedPassword = await bcrypt.hash(
+            payload.password,
+            BCRYPT_SALT_ROUNDS
+        );
 
         return UserRepository.createUser({
             ...payload,

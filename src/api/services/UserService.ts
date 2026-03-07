@@ -1,6 +1,8 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import UserRepository from '../repositories/UserRepository';
 import { UserInput, UserInputUpdate, UserOutput } from '../models/User';
+
+const BCRYPT_SALT_ROUNDS = 10;
 
 interface IUserService {
     createUser(payload: UserInput): Promise<UserOutput>;
@@ -18,7 +20,10 @@ class UserService implements IUserService {
             throw new Error('Email must be unique');
         }
 
-        const hashedPassword = bcrypt.hashSync(payload.password, 5);
+        const hashedPassword = await bcrypt.hash(
+            payload.password,
+            BCRYPT_SALT_ROUNDS
+        );
 
         return UserRepository.createUser({
             ...payload,
