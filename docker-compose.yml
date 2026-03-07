@@ -16,7 +16,7 @@ services:
             - CORS_ORIGIN=${CORS_ORIGIN:-*}
             - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
             - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-100}
-            - DB_HOST=db
+            - DB_HOST=${DB_HOST:-db}
             - DB_DATABASE=${DB_DATABASE:-appdb}
             - DB_USERNAME=${DB_USERNAME:-postgres}
             - DB_PASSWORD=${DB_PASSWORD:-postgres}
