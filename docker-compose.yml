@@ -3,26 +3,29 @@ services:
         build: .
         ports:
             - '${PORT:-3001}:3001'
+        env_file:
+            - path: .env
+              required: false
         environment:
-            - NODE_ENV=production
-            - APP_NAME=${APP_NAME:-project-structure-api}
-            - SERVER=production
-            - PORT=3001
-            - SECRET=${SECRET:-change-me-in-production}
-            - API_VERSION=v1
+            - NODE_ENV=${NODE_ENV:-development}
+            - APP_NAME=${APP_NAME:-my-project}
+            - SERVER=${SERVER:-development}
+            - PORT=${PORT:-3001}
+            - SECRET=${SECRET:-j!89nKO5as&Js}
+            - API_VERSION=${API_VERSION:-v1}
             - CORS_ORIGIN=${CORS_ORIGIN:-*}
             - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
             - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-100}
-            - DB_HOST=db
+            - DB_HOST=${DB_HOST:-db}
             - DB_DATABASE=${DB_DATABASE:-appdb}
             - DB_USERNAME=${DB_USERNAME:-postgres}
             - DB_PASSWORD=${DB_PASSWORD:-postgres}
-            - DB_PORT=5432
-            - DB_DIALECT=postgres
+            - DB_PORT=${DB_PORT:-5432}
+            - DB_DIALECT=${DB_DIALECT:-postgres}
             - DB_TIMEZONE=${DB_TIMEZONE:-UTC}
-            - DB_LOG=false
-            - DB_POOL_MIN=2
-            - DB_POOL_MAX=10
+            - DB_LOG=${DB_LOG:-true}
+            - DB_POOL_MIN=${DB_POOL_MIN:-2}
+            - DB_POOL_MAX=${DB_POOL_MAX:-10}
         depends_on:
             db:
                 condition: service_healthy
@@ -32,6 +35,9 @@ services:
 
     db:
         image: postgres:16-alpine
+        env_file:
+            - path: .env
+              required: false
         environment:
             - POSTGRES_DB=${DB_DATABASE:-appdb}
             - POSTGRES_USER=${DB_USERNAME:-postgres}
