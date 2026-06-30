@@ -4,15 +4,19 @@ import { IUserService } from './interfaces/IUserService';
 import { NotFoundError, ConflictError } from '../../errors/AppError';
 import { PaginationOptions, PaginatedResult } from '../types/pagination';
 
+type PublicUserOutput = Omit<UserOutput, 'password'>;
+
 class UserService implements IUserService {
-    async createUser(payload: UserInput): Promise<UserOutput> {
+    async createUser(payload: UserInput): Promise<PublicUserOutput> {
         const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
             throw new ConflictError('Email must be unique');
         }
 
-        return UserRepository.createUser(payload);
+        const createdUser = await UserRepository.createUser(payload);
+        const { password, ...publicUser } = createdUser;
+        return publicUser;
     }
 
     getUsers(

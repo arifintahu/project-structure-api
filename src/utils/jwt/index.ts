@@ -13,13 +13,14 @@ class JWT {
             jwt.sign(
                 {
                     id: userId,
-                    iat: Date.now()
+                    iat: Math.floor(Date.now() / 1000)
                 },
-                AppConfig.app.secret,
+                AppConfig.app.secret!,
                 options,
                 (err: Error | null, token: string | undefined) => {
                     if (err) {
                         reject(err);
+                        return;
                     }
                     resolve(token);
                 }
@@ -29,9 +30,10 @@ class JWT {
 
     verifyToken(token: string): Promise<JwtPayload | undefined> {
         return new Promise((resolve, reject) => {
-            jwt.verify(token, AppConfig.app.secret, (err, decoded) => {
+            jwt.verify(token, AppConfig.app.secret!, (err, decoded) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
                 resolve(decoded as JwtPayload | undefined);
             });

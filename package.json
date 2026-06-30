@@ -8,8 +8,9 @@
     },
     "scripts": {
         "prepare": "husky",
-        "start": "node .",
-        "start-watch": "nodemon --delay 5000ms --exec npm run start",
+        "prepare-logs": "mkdir -p logs",
+        "start": "npm run prepare-logs && node .",
+        "start-watch": "npm run prepare-logs && nodemon --delay 5000ms --exec npm run start",
         "build": "tsc",
         "build-watch": "tsc -w",
         "lint": "eslint 'src/**/*.ts'",

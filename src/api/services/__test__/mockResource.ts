@@ -132,8 +132,6 @@ const mockResource = {
             POSITIVE_CASE_OUTPUT: {
                 id: 1,
                 email: 'user@mail.com',
-                password:
-                    '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
                 firstName: 'John',
                 lastName: 'Doe',
                 roleId: 1,

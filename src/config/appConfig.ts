@@ -7,7 +7,7 @@ const AppConfig = {
         ),
         port: parseInt(<string>process.env.PORT, 10) || 3000,
         apiVersion: process.env.API_VERSION || 'v1',
-        secret: process.env.SECRET || 'j!89nKO5as&Js'
+        secret: process.env.SECRET
     },
     cors: {
         origin: process.env.CORS_ORIGIN || '*'
