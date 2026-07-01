@@ -14,9 +14,7 @@ class UserService implements IUserService {
             throw new ConflictError('Email must be unique');
         }
 
-        const createdUser = await UserRepository.createUser(payload);
-        const { password, ...publicUser } = createdUser;
-        return publicUser;
+        return UserRepository.createUser(payload);
     }
 
     getUsers(

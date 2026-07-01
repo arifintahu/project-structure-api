@@ -33,7 +33,7 @@ class AuthService implements IAuthService {
         return token;
     }
 
-    async signUp(payload: UserInput): Promise<UserOutput> {
+    async signUp(payload: UserInput): Promise<Omit<UserOutput, 'password'>> {
         const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {

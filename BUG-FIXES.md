@@ -16,9 +16,17 @@ The `authenticate` middleware was an `async` function without a `try/catch`. In 
 
 ### 2. Hashed passwords leaked in API responses
 
-`UserService.createUser` returned the full `UserOutput` object — including the `password` field with the bcrypt hash. Any client hitting `POST /v1/users` received the password hash in the JSON response body.
+`UserService.createUser` originally returned the full `UserOutput` object — including the `password` field with the bcrypt hash. Any client hitting `POST /v1/users` received the password hash in the JSON response body.
 
-→ Introduced a `PublicUserOutput` type (`Omit<UserOutput, 'password'>`) and updated the service and interface to return only safe fields. Updated test mocks to match.
+A first-pass fix attempted to strip `password` in the service layer via object destructure:
+
+```ts
+const { password, ...publicUser } = createdUser;
+```
+
+But `User.create()` returns a **Sequelize Model instance**, not a plain object. Sequelize attaches attribute getters to the prototype and stores values in the hidden own-property `dataValues`. Object rest-destructure only copies own enumerable properties, so the result was `{ dataValues: { ..., password: '$2b$...' }, ... }` — the password hash was still present, just nested. Existing unit tests missed this because the mock returned a plain object, not a real Sequelize instance.
+
+→ Moved the fix into `UserRepository.createUser` and used `user.get({ plain: true })` to flatten the instance into a real plain object before stripping `password`. This matches the codebase's existing pattern of attribute filtering at the repository layer (see `getUsers`/`getUserDetail`). Updated `IUserRepository.createUser` and `IAuthService.signUp` return types to `Omit<UserOutput, 'password'>`. Strengthened the Repository unit test to mock `User.create()` as `{ get: () => plainObject }`, reproducing the Sequelize instance shape so the destructure is actually exercised.
 
 ---
 
@@ -91,7 +99,7 @@ The global error handler logged `req.body` for debugging — including `password
 | Command         | Result        |
 | --------------- | ------------- |
 | `npm run build` | Clean         |
-| `npm test`      | 30/30 passing |
+| `npm test`      | 37/37 passing |
 | `npm run lint`  | Zero errors   |
 
 ---
