@@ -26,7 +26,10 @@ export default [
             'no-async-promise-executor': 0,
             'prettier/prettier': 1,
             '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-unused-vars': 'warn'
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                { ignoreRestSiblings: true }
+            ]
         }
     },
     prettierConfig
