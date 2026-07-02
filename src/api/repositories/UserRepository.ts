@@ -9,8 +9,12 @@ import {
 } from '../types/pagination';
 
 class UserRepository implements IUserRepository {
-    createUser(payload: UserInput): Promise<UserOutput> {
-        return User.create(payload);
+    async createUser(
+        payload: UserInput
+    ): Promise<Omit<UserOutput, 'password'>> {
+        const user = await User.create(payload);
+        const { password, ...publicUser } = user.get({ plain: true });
+        return publicUser as Omit<UserOutput, 'password'>;
     }
 
     async getUsers(

@@ -2,14 +2,14 @@ import morgan, { StreamOptions } from 'morgan';
 import { Request } from 'express';
 
 import Logger from '../../../utils/logger';
+import AppConfig from '../../../config/appConfig';
 
 const stream: StreamOptions = {
     write: (message) => Logger.http(message.trim())
 };
 
 const skip = () => {
-    const env = process.env.NODE_ENV || 'development';
-    return env !== 'development';
+    return !AppConfig.app.isDevelopment;
 };
 
 morgan.token('request-id', (req: Request) => req.requestId || '-');

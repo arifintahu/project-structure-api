@@ -40,18 +40,44 @@ describe('UserRepository', () => {
             //arrange
             const mockInput =
                 mockResource.UserRepository.createUser.POSITIVE_CASE_INPUT;
-            const mockOutput: any =
-                mockResource.UserRepository.createUser.POSITIVE_CASE_OUTPUT;
+            const plainUser = {
+                id: 1,
+                email: 'user@mail.com',
+                password:
+                    '$2b$05$bnaCGMUl/IYffmo9zku7c.AVDpdkJZPt.ZEIXsKULeQglPDyRU7Di',
+                firstName: 'John',
+                lastName: 'Doe',
+                roleId: 1,
+                createdAt: '2022-08-26 14:40:19',
+                updatedAt: '2022-08-26 14:40:19',
+                deletedAt: null
+            };
+            const mockModelInstance = {
+                get: jest.fn().mockReturnValue(plainUser)
+            };
 
-            MockedUser.create.mockResolvedValue(mockOutput);
+            MockedUser.create.mockResolvedValue(mockModelInstance as any);
 
             //act
             const result = await UserRepository.createUser(mockInput);
 
             //assert
-            expect(result).toEqual(mockOutput);
+            expect(result).toEqual({
+                id: 1,
+                email: 'user@mail.com',
+                firstName: 'John',
+                lastName: 'Doe',
+                roleId: 1,
+                createdAt: '2022-08-26 14:40:19',
+                updatedAt: '2022-08-26 14:40:19',
+                deletedAt: null
+            });
+            expect(result).not.toHaveProperty('password');
             expect(MockedUser.create).toHaveBeenCalledTimes(1);
             expect(MockedUser.create).toHaveBeenCalledWith(mockInput);
+            expect(mockModelInstance.get).toHaveBeenCalledWith({
+                plain: true
+            });
         });
     });
 

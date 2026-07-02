@@ -2,7 +2,7 @@ import { UserInput, UserInputUpdate, UserOutput } from '../../models/User';
 import { PaginationOptions, PaginatedResult } from '../../types/pagination';
 
 export interface IUserRepository {
-    createUser(payload: UserInput): Promise<UserOutput>;
+    createUser(payload: UserInput): Promise<Omit<UserOutput, 'password'>>;
     getUsers(options?: PaginationOptions): Promise<PaginatedResult<UserOutput>>;
     getUserDetail(userId: number): Promise<UserOutput | null>;
     getUserByEmail(email: string): Promise<UserOutput | null>;

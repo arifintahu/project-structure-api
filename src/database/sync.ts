@@ -4,7 +4,10 @@ dotenv.config();
 import Role from '../api/models/Role';
 import User from '../api/models/User';
 
-const syncTables = () => Promise.all([User.sync(), Role.sync()]);
+const syncTables = async () => {
+    await Role.sync();
+    await User.sync();
+};
 
 syncTables()
     .then((result) => console.log(result))

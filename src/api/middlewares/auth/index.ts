@@ -8,29 +8,33 @@ class Auth {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        const authorization = String(req.headers.authorization);
-        if (!authorization || !authorization.includes('Bearer')) {
-            res.sendStatus(401);
-            return;
+        try {
+            const authorization = String(req.headers.authorization);
+            if (!authorization || !authorization.includes('Bearer')) {
+                res.sendStatus(401);
+                return;
+            }
+            const token = authorization?.slice(7);
+            const payload = await JWT.verifyToken(token);
+
+            if (!payload) {
+                res.sendStatus(401);
+                return;
+            }
+
+            const userId: number = payload.id;
+            const userdata = await UserRepository.getUserDetail(userId);
+
+            if (!userdata) {
+                res.sendStatus(401);
+                return;
+            }
+            req.userdata = userdata;
+
+            next();
+        } catch (error) {
+            next(error);
         }
-        const token = authorization?.slice(7);
-        const payload = await JWT.verifyToken(token);
-
-        if (!payload) {
-            res.sendStatus(401);
-            return;
-        }
-
-        const userId: number = payload.id;
-        const userdata = await UserRepository.getUserDetail(userId);
-
-        if (!userdata) {
-            res.sendStatus(401);
-            return;
-        }
-        req.userdata = userdata;
-
-        next();
     }
 
     checkRoles(...roles: string[]) {
