@@ -1,6 +1,5 @@
 import UserRepository from '../UserRepository';
 import User from '../../models/User';
-import Role from '../../models/Role';
 import mockResource from './mockResource';
 
 jest.mock('bcrypt');
